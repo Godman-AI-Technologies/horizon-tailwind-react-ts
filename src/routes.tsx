@@ -19,7 +19,9 @@ import {
   MdLock,
   MdDashboard,
 } from "react-icons/md";
+import { PiPlugsConnectedFill } from "react-icons/pi";
 import Dashboard from "views/admin/dashboard";
+import Api from "views/admin/api";
 
 const routes = [
   {
@@ -42,6 +44,13 @@ const routes = [
     path: "dashboard",
     icon: <MdDashboard className="h-6 w-6" />,
     component: <Dashboard />,
+  },
+  {
+    name: "API",
+    layout: "/admin",
+    path: "api",
+    icon: <PiPlugsConnectedFill className="h-6 w-6" />,
+    component: <Api />,
   },
 
   // {
