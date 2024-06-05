@@ -21,12 +21,27 @@ import {
 
 const routes = [
   {
-    name: "Main Dashboard",
+    name: "Home",
     layout: "/admin",
     path: "default",
     icon: <MdHome className="h-6 w-6" />,
     component: <MainDashboard />,
   },
+  {
+    name: "Profile",
+    layout: "/admin",
+    path: "profile",
+    icon: <MdPerson className="h-6 w-6" />,
+    component: <Profile />,
+  },
+
+  // {
+  //   name: "Main Dashboard",
+  //   layout: "/admin",
+  //   path: "dashboard",
+  //   icon: <MdHome className="h-6 w-6" />,
+  //   component: <MainDashboard />,
+  // },
   {
     name: "NFT Marketplace",
     layout: "/admin",
@@ -41,13 +56,6 @@ const routes = [
     icon: <MdBarChart className="h-6 w-6" />,
     path: "data-tables",
     component: <DataTables />,
-  },
-  {
-    name: "Profile",
-    layout: "/admin",
-    path: "profile",
-    icon: <MdPerson className="h-6 w-6" />,
-    component: <Profile />,
   },
   {
     name: "Sign In",
