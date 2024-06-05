@@ -17,6 +17,7 @@ import {
   MdBarChart,
   MdPerson,
   MdLock,
+  MdDashboard,
 } from "react-icons/md";
 import Dashboard from "views/admin/dashboard";
 
@@ -39,7 +40,7 @@ const routes = [
     name: "Dashboard",
     layout: "/admin",
     path: "dashboard",
-    icon: <MdPerson className="h-6 w-6" />,
+    icon: <MdDashboard className="h-6 w-6" />,
     component: <Dashboard />,
   },
 
