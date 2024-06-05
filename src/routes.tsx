@@ -18,6 +18,7 @@ import {
   MdPerson,
   MdLock,
 } from "react-icons/md";
+import Dashboard from "views/admin/dashboard";
 
 const routes = [
   {
@@ -33,6 +34,13 @@ const routes = [
     path: "profile",
     icon: <MdPerson className="h-6 w-6" />,
     component: <Profile />,
+  },
+  {
+    name: "Dashboard",
+    layout: "/admin",
+    path: "dashboard",
+    icon: <MdPerson className="h-6 w-6" />,
+    component: <Dashboard />,
   },
 
   // {
