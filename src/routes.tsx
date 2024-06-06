@@ -1,24 +1,9 @@
-import React from "react";
-
 // Admin Imports
 import MainDashboard from "views/admin/default";
-import NFTMarketplace from "views/admin/marketplace";
+
 import Profile from "views/admin/profile";
-import DataTables from "views/admin/tables";
-import RTLDefault from "views/rtl/default";
-
-// Auth Imports
-import SignIn from "views/auth/SignIn";
-
 // Icon Imports
-import {
-  MdHome,
-  MdOutlineShoppingCart,
-  MdBarChart,
-  MdPerson,
-  MdLock,
-  MdDashboard,
-} from "react-icons/md";
+import { MdHome, MdPerson, MdDashboard } from "react-icons/md";
 import { PiPlugsConnectedFill } from "react-icons/pi";
 import Dashboard from "views/admin/dashboard";
 import Api from "views/admin/api";
@@ -41,7 +26,7 @@ const routes = [
   {
     name: "Dashboard",
     layout: "/admin",
-    path: "dashboard",
+    path: "dashboard/*",
     icon: <MdDashboard className="h-6 w-6" />,
     component: <Dashboard />,
   },

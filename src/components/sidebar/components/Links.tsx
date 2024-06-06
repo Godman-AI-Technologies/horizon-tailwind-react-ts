@@ -11,8 +11,9 @@ export const SidebarLinks = (props: { routes: RoutesType[] }): JSX.Element => {
   const { routes } = props;
 
   // verifies if routeName is the one active (in browser input)
-  const activeRoute = (routeName: string) => {
-    return location.pathname.includes(routeName);
+  const activeRoute = (layout: string, path: string): boolean => {
+    const regex = new RegExp(`${layout}.*${path}`);
+    return regex.test(location.pathname);
   };
 
   const createLinks = (routes: RoutesType[]) => {
@@ -31,7 +32,7 @@ export const SidebarLinks = (props: { routes: RoutesType[] }): JSX.Element => {
               >
                 <span
                   className={`${
-                    activeRoute(route.path) === true
+                    activeRoute(route.layout, route.path)
                       ? "font-bold text-brand-500 dark:text-white"
                       : "font-medium text-gray-600"
                   }`}
@@ -40,7 +41,7 @@ export const SidebarLinks = (props: { routes: RoutesType[] }): JSX.Element => {
                 </span>
                 <p
                   className={`leading-1 ml-4 flex ${
-                    activeRoute(route.path) === true
+                    activeRoute(route.layout, route.path)
                       ? "font-bold text-navy-700 dark:text-white"
                       : "font-medium text-gray-600"
                   }`}
@@ -48,7 +49,7 @@ export const SidebarLinks = (props: { routes: RoutesType[] }): JSX.Element => {
                   {route.name}
                 </p>
               </li>
-              {activeRoute(route.path) ? (
+              {activeRoute(route.layout, route.path) ? (
                 <div className="absolute right-0 top-px h-9 w-1 rounded-lg bg-brand-500 dark:bg-brand-400" />
               ) : null}
             </div>
