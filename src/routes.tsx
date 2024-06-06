@@ -5,7 +5,7 @@ import Profile from "views/admin/profile";
 // Icon Imports
 import { MdHome, MdPerson, MdDashboard } from "react-icons/md";
 import { PiPlugsConnectedFill } from "react-icons/pi";
-import Dashboard from "views/admin/dashboard";
+import Control from "views/admin/control";
 import Api from "views/admin/api";
 
 const routes = [
@@ -24,11 +24,11 @@ const routes = [
     component: <Profile />,
   },
   {
-    name: "Dashboard",
+    name: "Control",
     layout: "/admin",
-    path: "dashboard/*",
+    path: "control/*",
     icon: <MdDashboard className="h-6 w-6" />,
-    component: <Dashboard />,
+    component: <Control />,
   },
   {
     name: "API",

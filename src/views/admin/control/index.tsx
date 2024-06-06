@@ -2,7 +2,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import ContentLayout from "shared/ContentLayout/ContentLayout";
 import HorizontalLink from "shared/HorizontalLink/HorizontalLink";
 
-const Dashboard = () => {
+const Control = () => {
   const location = useLocation();
 
   const subroutes = [
@@ -37,4 +37,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default Control;
