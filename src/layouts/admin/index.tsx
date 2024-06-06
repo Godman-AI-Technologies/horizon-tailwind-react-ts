@@ -10,34 +10,19 @@ export default function Admin(props: { [x: string]: any }) {
   const [open, setOpen] = React.useState(true);
   const [currentRoute, setCurrentRoute] = React.useState("Main Dashboard");
 
-  React.useEffect(() => {
-    window.addEventListener("resize", () =>
-      window.innerWidth < 1200 ? setOpen(false) : setOpen(true)
-    );
-  }, []);
-  React.useEffect(() => {
-    getActiveRoute(routes);
-  }, [location.pathname]);
-
-  const getActiveRoute = (routes: RoutesType[]): string | boolean => {
-    let activeRoute = "Main Dashboard";
+  const getActiveRoute = (routes: RoutesType[]): void => {
     for (let i = 0; i < routes.length; i++) {
-      if (
-        window.location.href.indexOf(
-          routes[i].layout + "/" + routes[i].path
-        ) !== -1
-      ) {
+      const regex = new RegExp(`${routes[i].layout}.*${routes[i].path}`);
+      if (regex.test(location.pathname)) {
         setCurrentRoute(routes[i].name);
       }
     }
-    return activeRoute;
   };
   const getActiveNavbar = (routes: RoutesType[]): string | boolean => {
     let activeNavbar = false;
     for (let i = 0; i < routes.length; i++) {
-      if (
-        window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
-      ) {
+      const regex = new RegExp(`${routes[i].layout}.*${routes[i].path}`);
+      if (regex.test(location.pathname)) {
         return routes[i].secondary;
       }
     }
@@ -54,6 +39,15 @@ export default function Admin(props: { [x: string]: any }) {
       }
     });
   };
+
+  React.useEffect(() => {
+    window.addEventListener("resize", () =>
+      window.innerWidth < 1200 ? setOpen(false) : setOpen(true)
+    );
+  }, []);
+  React.useEffect(() => {
+    getActiveRoute(routes);
+  });
 
   document.documentElement.dir = "ltr";
   return (
