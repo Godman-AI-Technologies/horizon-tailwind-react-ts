@@ -36,7 +36,7 @@ const routes = [
     layout: "/admin",
     path: "chats",
     icon: <PiChatsFill className="h-6 w-6" />,
-    component: <Control />,
+    component: <ChatsPage />,
   },
   {
     name: "API",

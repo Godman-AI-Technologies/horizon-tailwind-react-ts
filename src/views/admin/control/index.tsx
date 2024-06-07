@@ -5,27 +5,8 @@ import HorizontalLink from "shared/HorizontalLink/HorizontalLink";
 const Control = () => {
   const location = useLocation();
 
-  const subroutes = [
-    { path: "agents", name: "Agents" },
-    { path: "notes", name: "Notes" },
-    { path: "knowledge", name: "Knowledge" },
-    { path: "triggers", name: "Triggers" },
-  ];
-
   return (
     <ContentLayout>
-      <div className="flex space-x-4">
-        {subroutes.map((el) => (
-          <div key={el.path}>
-            <HorizontalLink
-              path={el.path}
-              isActive={location.pathname.includes(el.path)}
-            >
-              {el.name}
-            </HorizontalLink>
-          </div>
-        ))}
-      </div>
       <Routes>
         <Route path="agents" element={<div>agents</div>} />
         <Route path="notes" element={<div>notes</div>} />
