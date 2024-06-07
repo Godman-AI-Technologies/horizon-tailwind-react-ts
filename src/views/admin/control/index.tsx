@@ -1,10 +1,7 @@
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import ContentLayout from "shared/ContentLayout/ContentLayout";
-import HorizontalLink from "shared/HorizontalLink/HorizontalLink";
 
 const Control = () => {
-  const location = useLocation();
-
   return (
     <ContentLayout>
       <Routes>
