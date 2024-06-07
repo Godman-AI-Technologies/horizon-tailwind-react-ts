@@ -2,6 +2,7 @@ import InputField from "components/fields/InputField";
 import { FcGoogle } from "react-icons/fc";
 import Checkbox from "components/checkbox";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 export default function SignUp() {
@@ -10,6 +11,8 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSignUp = async (e: any) => {
     e.preventDefault();
@@ -44,8 +47,7 @@ export default function SignUp() {
       Cookies.set("accessToken", data.accessToken, {
         expires: 1,
       });
-      console.log("Sign Up successful", data);
-      // You can redirect or show a success message here
+      navigate("/");
     } catch (error) {
       console.error("Error signing up:", error);
     }
