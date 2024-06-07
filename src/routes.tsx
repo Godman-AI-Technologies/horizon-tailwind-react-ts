@@ -2,19 +2,13 @@
 import MainDashboard from "views/admin/default";
 
 import Profile from "views/admin/profile";
-// Icon Imports
-import {
-  MdHome,
-  MdPerson,
-  MdDashboard,
-  MdLock,
-  MdDoorFront,
-} from "react-icons/md";
-import { PiPlugsConnectedFill } from "react-icons/pi";
-import Dashboard from "views/admin/dashboard";
+
+import { MdHome, MdPerson, MdDashboard } from "react-icons/md";
+import { PiChatsFill, PiPlugsConnectedFill } from "react-icons/pi";
+import Control from "views/admin/control";
 import Api from "views/admin/api";
-import SignIn from "views/auth/SignIn";
-import SignUp from "views/auth/SignUp";
+import { ChatsPage } from "pages/ChatsPage/ChatsPage";
+
 
 const routes = [
   {
@@ -32,11 +26,18 @@ const routes = [
     component: <Profile />,
   },
   {
-    name: "Dashboard",
+    name: "Control",
     layout: "/admin",
-    path: "dashboard/*",
+    path: "control/*",
     icon: <MdDashboard className="h-6 w-6" />,
-    component: <Dashboard />,
+    component: <Control />,
+  },
+  {
+    name: "Chats",
+    layout: "/admin",
+    path: "chats",
+    icon: <PiChatsFill className="h-6 w-6" />,
+    component: <ChatsPage />,
   },
   {
     name: "API",
