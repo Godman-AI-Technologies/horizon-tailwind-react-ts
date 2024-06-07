@@ -14,7 +14,7 @@ import TaskCard from "views/rtl/default/components/TaskCard";
 import tableDataCheck from "./variables/tableDataCheck";
 import tableDataComplex from "./variables/tableDataComplex";
 
-const Control = () => {
+const Dashboard = () => {
   return (
     <div>
       {/* Card widget */}
@@ -91,4 +91,4 @@ const Control = () => {
   );
 };
 
-export default Control;
+export default Dashboard;
