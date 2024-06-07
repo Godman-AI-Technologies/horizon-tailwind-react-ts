@@ -16,7 +16,14 @@ const App = () => {
           </AuthHandler>
         }
       />
-      <Route path="rtl/*" element={<RtlLayout />} />
+      <Route
+        path="rtl/*"
+        element={
+          <AuthHandler>
+            <RtlLayout />
+          </AuthHandler>
+        }
+      />
       <Route path="/" element={<Navigate to="/admin" replace />} />
     </Routes>
   );
