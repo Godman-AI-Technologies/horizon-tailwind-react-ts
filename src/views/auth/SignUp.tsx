@@ -2,8 +2,10 @@ import InputField from "components/fields/InputField";
 import { FcGoogle } from "react-icons/fc";
 import Checkbox from "components/checkbox";
 import { useState } from "react";
+import Cookies from "js-cookie";
 
 export default function SignUp() {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -15,8 +17,35 @@ export default function SignUp() {
       console.error("Passwords do not match");
       return;
     }
+    if (!acceptTerms) {
+      console.error("You must accept the Terms and Conditions");
+      return;
+    }
     try {
-      console.log("Sign Up", { email, password, acceptTerms });
+      const response = await fetch(
+        `${process.env.REACT_APP_USER_API}/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username,
+            email,
+            password,
+            isVerified: false,
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to sign up");
+      }
+      const data = await response.json();
+      Cookies.set("accessToken", data.accessToken, {
+        expires: 1,
+      });
+      console.log("Sign Up successful", data);
+      // You can redirect or show a success message here
     } catch (error) {
       console.error("Error signing up:", error);
     }
@@ -54,6 +83,16 @@ export default function SignUp() {
           <div className="h-px w-full bg-gray-200 dark:bg-navy-700" />
         </div>
         <form onSubmit={handleSignUp}>
+          {/* Username */}
+          <InputField
+            variant="auth"
+            extra="mb-3"
+            label="Username*"
+            placeholder="Username"
+            id="username"
+            type="text"
+            onChange={(e) => setUsername(e.target.value)}
+          />
           {/* Email */}
           <InputField
             variant="auth"
