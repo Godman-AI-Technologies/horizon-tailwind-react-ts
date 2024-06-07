@@ -21,14 +21,13 @@ export const SidebarLinks = (props: { routes: RoutesType[] }): JSX.Element => {
       if (
         route.layout === "/admin" ||
         route.layout === "/auth" ||
-        route.layout === "/chats" ||
         route.layout === "/rtl"
       ) {
         return (
           <Link key={index} to={route.layout + "/" + route.path}>
             <div className="relative mb-3 flex hover:cursor-pointer">
               <li
-                className="my-[3px] flex cursor-pointer items-center px-4"
+                className="my-[3px] flex cursor-pointer items-center px-8"
                 key={index}
               >
                 <span
