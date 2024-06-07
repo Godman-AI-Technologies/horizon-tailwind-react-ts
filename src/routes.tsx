@@ -2,12 +2,13 @@
 import MainDashboard from "views/admin/default";
 
 import Profile from "views/admin/profile";
-// Icon Imports
+
 import { MdHome, MdPerson, MdDashboard } from "react-icons/md";
 import { PiChatsFill, PiPlugsConnectedFill } from "react-icons/pi";
 import Control from "views/admin/control";
 import Api from "views/admin/api";
 import { ChatsPage } from "pages/ChatsPage/ChatsPage";
+
 
 const routes = [
   {
@@ -67,13 +68,6 @@ const routes = [
   //   icon: <MdBarChart className="h-6 w-6" />,
   //   path: "data-tables",
   //   component: <DataTables />,
-  // },
-  // {
-  //   name: "Sign In",
-  //   layout: "/auth",
-  //   path: "sign-in",
-  //   icon: <MdLock className="h-6 w-6" />,
-  //   component: <SignIn />,
   // },
   // {
   //   name: "RTL Admin",

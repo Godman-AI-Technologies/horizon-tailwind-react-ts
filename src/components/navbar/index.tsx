@@ -2,10 +2,13 @@ import React from "react";
 import Dropdown from "components/dropdown";
 import { FiAlignJustify } from "react-icons/fi";
 import { Link, useLocation } from "react-router-dom";
+
 import { FiSearch } from "react-icons/fi";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
 import avatar from "assets/img/avatars/avatar4.png";
+
 import HorizontalLink from "shared/HorizontalLink/HorizontalLink";
+
 
 const Navbar = (props: {
   onOpenSidenav: () => void;
@@ -14,6 +17,7 @@ const Navbar = (props: {
 }) => {
   const { onOpenSidenav, brandText } = props;
   const [darkmode, setDarkmode] = React.useState(false);
+
   const location = useLocation();
 
   const subroutes = [
@@ -128,6 +132,11 @@ const Navbar = (props: {
                 <a
                   href=" "
                   className="mt-3 text-sm font-medium text-red-500 hover:text-red-500"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    Cookies.remove("accessToken");
+                    navigate("auth/log-in");
+                  }}
                 >
                   Log Out
                 </a>
