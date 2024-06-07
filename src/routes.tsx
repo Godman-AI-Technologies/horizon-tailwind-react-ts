@@ -4,9 +4,10 @@ import MainDashboard from "views/admin/default";
 import Profile from "views/admin/profile";
 // Icon Imports
 import { MdHome, MdPerson, MdDashboard } from "react-icons/md";
-import { PiPlugsConnectedFill } from "react-icons/pi";
+import { PiChatsFill, PiPlugsConnectedFill } from "react-icons/pi";
 import Control from "views/admin/control";
 import Api from "views/admin/api";
+import { ChatsPage } from "pages/ChatsPage/ChatsPage";
 
 const routes = [
   {
@@ -28,6 +29,13 @@ const routes = [
     layout: "/admin",
     path: "control/*",
     icon: <MdDashboard className="h-6 w-6" />,
+    component: <Control />,
+  },
+  {
+    name: "Chats",
+    layout: "/admin",
+    path: "chats",
+    icon: <PiChatsFill className="h-6 w-6" />,
     component: <Control />,
   },
   {
