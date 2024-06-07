@@ -2,18 +2,42 @@ import InputField from "components/fields/InputField";
 import { FcGoogle } from "react-icons/fc";
 import Checkbox from "components/checkbox";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 export default function SignIn() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleSignIn = async (e: any) => {
     e.preventDefault();
     try {
-      console.log("Sign In", { email, password, keepLoggedIn });
+      const response = await fetch(
+        `${process.env.REACT_APP_USER_API}/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username,
+            password,
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to sign up");
+      }
+      const data = await response.json();
+      Cookies.set("accessToken", data.accessToken, {
+        expires: 1,
+      });
+      navigate("/");
     } catch (error) {
-      console.error("Error signing in:", error);
+      console.error("Error signing up:", error);
     }
   };
 
@@ -44,15 +68,15 @@ export default function SignIn() {
           <div className="h-px w-full bg-gray-200 dark:bg-navy-700" />
         </div>{" "}
         <form onSubmit={handleSignIn}>
-          {/* Email */}
+          {/* Username */}
           <InputField
             variant="auth"
             extra="mb-3"
-            label="Email*"
-            placeholder="mail@simmmple.com"
-            id="email"
+            label="Username*"
+            placeholder="username"
+            id="username"
             type="text"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
 
           {/* Password */}
