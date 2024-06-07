@@ -68,20 +68,6 @@ const routes = [
   //   path: "data-tables",
   //   component: <DataTables />,
   // },
-  {
-    name: "Sign In",
-    layout: "/auth",
-    path: "sign-in",
-    icon: <MdLock className="h-6 w-6" />,
-    component: <SignIn />,
-  },
-  {
-    name: "Sign Up",
-    layout: "/auth",
-    path: "sign-up",
-    icon: <MdDoorFront className="h-6 w-6" />,
-    component: <SignUp />,
-  },
   // {
   //   name: "RTL Admin",
   //   layout: "/rtl",
