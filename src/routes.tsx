@@ -3,10 +3,18 @@ import MainDashboard from "views/admin/default";
 
 import Profile from "views/admin/profile";
 // Icon Imports
-import { MdHome, MdPerson, MdDashboard } from "react-icons/md";
+import {
+  MdHome,
+  MdPerson,
+  MdDashboard,
+  MdLock,
+  MdDoorFront,
+} from "react-icons/md";
 import { PiPlugsConnectedFill } from "react-icons/pi";
 import Dashboard from "views/admin/dashboard";
 import Api from "views/admin/api";
+import SignIn from "views/auth/SignIn";
+import SignUp from "views/auth/SignUp";
 
 const routes = [
   {
@@ -60,13 +68,20 @@ const routes = [
   //   path: "data-tables",
   //   component: <DataTables />,
   // },
-  // {
-  //   name: "Sign In",
-  //   layout: "/auth",
-  //   path: "sign-in",
-  //   icon: <MdLock className="h-6 w-6" />,
-  //   component: <SignIn />,
-  // },
+  {
+    name: "Sign In",
+    layout: "/auth",
+    path: "sign-in",
+    icon: <MdLock className="h-6 w-6" />,
+    component: <SignIn />,
+  },
+  {
+    name: "Sign Up",
+    layout: "/auth",
+    path: "sign-up",
+    icon: <MdDoorFront className="h-6 w-6" />,
+    component: <SignUp />,
+  },
   // {
   //   name: "RTL Admin",
   //   layout: "/rtl",
