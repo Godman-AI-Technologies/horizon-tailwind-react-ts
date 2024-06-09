@@ -1,7 +1,10 @@
 import Cookies from "js-cookie";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { FaTrash } from "react-icons/fa";
 
 export const Notes = () => {
+  const [notes, setNotes] = useState(null);
+
   useEffect(() => {
     const fetchNotes = async () => {
       const token = Cookies.get("accessToken");
@@ -25,12 +28,37 @@ export const Notes = () => {
 
         const data = await response.json();
         console.log(data);
+        setNotes(data);
       } catch (error) {
-        console.error("Error on getting agents:", error);
+        console.error("Error on getting notes:", error);
       }
     };
 
     fetchNotes();
-  });
-  return <div>Notes</div>;
+  }, []);
+
+  const handleDelete = (id: string) => {
+    alert(`Delete note with id: ${id}`);
+  };
+
+  return (
+    <div className="container mx-auto">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {notes &&
+          notes.map((note: any) => (
+            <div key={note._id} className="rounded bg-white p-4 shadow">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-semibold">{note.name}</h2>
+                <button
+                  className="text-red-500 hover:text-red-700"
+                  onClick={() => handleDelete(note._id)}
+                >
+                  <FaTrash />
+                </button>
+              </div>
+            </div>
+          ))}
+      </div>
+    </div>
+  );
 };
