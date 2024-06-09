@@ -25,7 +25,7 @@ export default function SignUp() {
       return;
     }
     try {
-      const response = await fetch(
+      const registerResponse = await fetch(
         `${process.env.REACT_APP_USER_API}/auth/register`,
         {
           method: "POST",
@@ -40,11 +40,29 @@ export default function SignUp() {
           }),
         }
       );
-      if (!response.ok) {
+      if (!registerResponse.ok) {
         throw new Error("Failed to sign up");
       }
-      const data = await response.json();
-      Cookies.set("accessToken", data.accessToken, {
+      const register = await registerResponse.json();
+
+      const payloadResponse = await fetch(
+        `${process.env.REACT_APP_USER_API}/auth/payload`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${register.accessToken}`,
+          },
+        }
+      );
+      if (!payloadResponse.ok) {
+        throw new Error("Failed to sign up");
+      }
+      const payload = await payloadResponse.json();
+      Cookies.set("accessToken", register.accessToken, {
+        expires: 1,
+      });
+      Cookies.set("profileId", payload.mongoUserId, {
         expires: 1,
       });
       navigate("/");

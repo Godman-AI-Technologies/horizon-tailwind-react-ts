@@ -15,7 +15,7 @@ export default function SignIn() {
   const handleSignIn = async (e: any) => {
     e.preventDefault();
     try {
-      const response = await fetch(
+      const logicResponse = await fetch(
         `${process.env.REACT_APP_USER_API}/auth/login`,
         {
           method: "POST",
@@ -28,11 +28,30 @@ export default function SignIn() {
           }),
         }
       );
-      if (!response.ok) {
+      if (!logicResponse.ok) {
         throw new Error("Failed to sign up");
       }
-      const data = await response.json();
-      Cookies.set("accessToken", data.accessToken, {
+      const login = await logicResponse.json();
+
+      const payloadResponse = await fetch(
+        `${process.env.REACT_APP_USER_API}/auth/payload`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${login.accessToken}`,
+          },
+        }
+      );
+      if (!payloadResponse.ok) {
+        throw new Error("Failed to sign up");
+      }
+      const payload = await payloadResponse.json();
+
+      Cookies.set("accessToken", login.accessToken, {
+        expires: 1,
+      });
+      Cookies.set("profileId", payload.mongoUserId, {
         expires: 1,
       });
       navigate("/");
