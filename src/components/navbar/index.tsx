@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Dropdown from "components/dropdown";
 import { FiAlignJustify } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -21,11 +21,47 @@ const Navbar = (props: {
   brandText: string;
   secondary?: boolean | string;
 }) => {
+  const [picture, setPicture] = useState(
+    "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+  );
+  const [name, setName] = useState();
+
   const location = useLocation();
 
   const { onOpenSidenav, brandText } = props;
   const [darkmode, setDarkmode] = React.useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setTimeout(async () => {
+      const token = Cookies.get("accessToken");
+      const profileId = Cookies.get("profileId");
+
+      try {
+        const response = await fetch(
+          `${process.env.REACT_APP_USER_API}/profiles/${profileId}/credentials`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to get agents");
+        }
+
+        const data = await response.json();
+        console.log(data);
+        setName(data?.name || "unknown");
+        data.picture && setPicture(data.picture);
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  });
 
   return (
     <nav className="sticky top-4 z-40 flex flex-row flex-wrap items-center justify-between rounded-xl bg-white/10 p-2 backdrop-blur-xl dark:bg-[#0b14374d]">
@@ -110,18 +146,14 @@ const Navbar = (props: {
         {/* Profile & Dropdown */}
         <Dropdown
           button={
-            <img
-              className="h-10 w-10 rounded-full"
-              src={avatar}
-              alt="Elon Musk"
-            />
+            <img className="h-10 w-10 rounded-full" src={picture} alt="" />
           }
           children={
             <div className="flex h-28 w-56 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
               <div className="ml-4 mt-3">
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-bold text-navy-700 dark:text-white">
-                    👋 Hey, Adela
+                    👋 Hey, {name}
                   </p>{" "}
                 </div>
               </div>
