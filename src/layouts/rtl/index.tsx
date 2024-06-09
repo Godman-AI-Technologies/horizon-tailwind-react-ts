@@ -57,7 +57,7 @@ export default function RTL() {
 
   document.documentElement.dir = "rtl";
   return (
-    <div className="flex h-full w-full">
+    <div className="flex min-h-screen w-full">
       <Sidebar open={open} onClose={() => setOpen(false)} />
       {/* Navbar & Main Content */}
       <div className="h-full w-full bg-lightPrimary dark:!bg-navy-900">
@@ -72,7 +72,7 @@ export default function RTL() {
               brandText={currentRoute}
               secondary={getActiveNavbar(routes)}
             />
-            <div className="pt-5s mx-auto mb-auto h-full min-h-[84vh] p-2 md:pr-2">
+            <div className="pt-5s mx-auto mb-auto min-h-screen p-2 dark:text-gray-200 md:pr-2">
               <Routes>
                 {getRoutes(routes)}
 
