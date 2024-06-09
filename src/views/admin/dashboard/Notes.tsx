@@ -46,7 +46,10 @@ export const Notes = () => {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {notes &&
           notes.map((note: any) => (
-            <div key={note._id} className="rounded bg-white p-4 shadow">
+            <div
+              key={note._id}
+              className="rounded bg-white p-4 shadow dark:bg-navy-700"
+            >
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold">{note.name}</h2>
                 <button

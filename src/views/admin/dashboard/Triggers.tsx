@@ -45,7 +45,10 @@ export const Triggers = () => {
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {triggers &&
           triggers.map((trigger: any) => (
-            <div key={trigger._id} className="rounded bg-white p-4 shadow">
+            <div
+              key={trigger._id}
+              className="rounded bg-white p-4 shadow dark:bg-navy-700"
+            >
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold">{trigger.name}</h2>
                 <button

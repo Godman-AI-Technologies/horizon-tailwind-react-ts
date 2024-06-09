@@ -48,7 +48,7 @@ export const Knowledge = () => {
           knowledge.map((knowledgeItem: any) => (
             <div
               key={knowledgeItem._id}
-              className="rounded bg-white p-4 shadow"
+              className="rounded bg-white p-4 shadow dark:bg-navy-700"
             >
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold">{knowledgeItem.name}</h2>
