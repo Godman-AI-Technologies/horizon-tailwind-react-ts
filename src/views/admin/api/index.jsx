@@ -1,3 +1,9 @@
+import { FaCopy } from "react-icons/fa";
+
+const copyToClipboard = (text) => {
+  navigator.clipboard.writeText(text);
+};
+
 const Documentation = () => {
   return (
     <div className="p-8">
@@ -9,19 +15,30 @@ const Documentation = () => {
         <h2 className="mb-2 text-2xl font-semibold">Description</h2>
         <p className="mb-2">
           This API provides the ability to send a request to an LLM agent and
-          receive a response. The request is made to{" "}
-          <code className="rounded bg-gray-200 p-1">
-            https://api-users.fewclicks.ru/api/agents/:agentId/public-llm
-          </code>
-          .
+          receive a response. The request is made to
         </p>
+        <code className="rounded p-1">
+          https://api-users.fewclicks.ru/api/agents/:agentId/public-llm
+        </code>
       </section>
 
       <section className="mb-6">
         <h2 className="mb-2 text-2xl font-semibold">URL</h2>
-        <p className="rounded bg-gray-200 p-2">
-          https://api-users.fewclicks.ru/api/agents/:agentId/public-llm
-        </p>
+        <div className="relative w-full rounded bg-gray-800 p-2 text-white">
+          <code>
+            https://api-users.fewclicks.ru/api/agents/:agentId/public-llm
+          </code>
+          <button
+            className="absolute right-2 top-2"
+            onClick={() =>
+              copyToClipboard(
+                "https://api-users.fewclicks.ru/api/agents/:agentId/public-llm"
+              )
+            }
+          >
+            <FaCopy />
+          </button>
+        </div>
         <p className="mt-2">
           <strong>:agentId</strong> — the identifier of the agent to which the
           request is directed.
@@ -30,14 +47,28 @@ const Documentation = () => {
 
       <section className="mb-6">
         <h2 className="mb-2 text-2xl font-semibold">Method</h2>
-        <p className="rounded bg-gray-200 p-2">POST</p>
+        <div className="relative rounded bg-gray-800 p-2 text-white">
+          <code>POST</code>
+          <button
+            className="absolute right-2 top-2"
+            onClick={() => copyToClipboard("POST")}
+          >
+            <FaCopy />
+          </button>
+        </div>
       </section>
 
       <section className="mb-6">
         <h2 className="mb-2 text-2xl font-semibold">Headers</h2>
-        <p className="rounded bg-gray-200 p-2">
-          Content-Type: application/json
-        </p>
+        <div className="relative rounded bg-gray-800 p-2 text-white">
+          <code>Content-Type: application/json</code>
+          <button
+            className="absolute right-2 top-2"
+            onClick={() => copyToClipboard("Content-Type: application/json")}
+          >
+            <FaCopy />
+          </button>
+        </div>
       </section>
 
       <section className="mb-6">
@@ -46,16 +77,33 @@ const Documentation = () => {
           The request body should contain the chat ID and an array of messages.
           Example request body:
         </p>
-        <pre className="rounded bg-gray-200 p-4">
-          {`{
+        <div className="relative rounded bg-gray-800 p-4 text-white">
+          <code>
+            <pre>{`{
   "chatId": "testId",
   "messages": [
     { "content": "ok", "role": "user" },
     { "content": "ok", "role": "assistant" },
     { "content": "ok", "role": "user" }
   ]
-}`}
-        </pre>
+}`}</pre>
+          </code>
+          <button
+            className="absolute right-2 top-2"
+            onClick={() =>
+              copyToClipboard(`{
+  "chatId": "testId",
+  "messages": [
+    { "content": "ok", "role": "user" },
+    { "content": "ok", "role": "assistant" },
+    { "content": "ok", "role": "user" }
+  ]
+}`)
+            }
+          >
+            <FaCopy />
+          </button>
+        </div>
         <h3 className="mt-4 text-xl font-semibold">Request Body Parameters</h3>
         <ul className="list-inside list-disc">
           <li>
@@ -70,10 +118,8 @@ const Documentation = () => {
               </li>
               <li>
                 <strong>role</strong> (string): The role of the message sender.
-                Possible values:{" "}
-                <code className="rounded bg-gray-200 p-1">user</code> (user) and{" "}
-                <code className="rounded bg-gray-200 p-1">assistant</code>{" "}
-                (assistant).
+                Possible values: <code className="rounded  p-1">user</code> and{" "}
+                <code className="rounded p-1">assistant</code> .
               </li>
             </ul>
           </li>
@@ -82,8 +128,9 @@ const Documentation = () => {
 
       <section className="mb-6">
         <h2 className="mb-2 text-2xl font-semibold">Example Request</h2>
-        <pre className="rounded bg-gray-200 p-4">
-          {`curl -X POST https://api-users.fewclicks.ru/api/agents/12345/public-llm
+        <div className="relative rounded bg-gray-800 p-4 text-white">
+          <code>
+            <pre>{`curl -X POST https://api-users.fewclicks.ru/api/agents/12345/public-llm
 -H "Content-Type: application/json"
 -d '{
   "chatId": "testId",
@@ -101,24 +148,66 @@ const Documentation = () => {
       "role": "user"
     }
   ]
-}'`}
-        </pre>
+}'`}</pre>
+          </code>
+          <button
+            className="absolute right-2 top-2"
+            onClick={() =>
+              copyToClipboard(`curl -X POST https://api-users.fewclicks.ru/api/agents/12345/public-llm
+-H "Content-Type: application/json"
+-d '{
+  "chatId": "testId",
+  "messages": [
+    {
+      "content": "ok",
+      "role": "user"
+    },
+    {
+      "content": "ok",
+      "role": "assistant"
+    },
+    {
+      "content": "ok",
+      "role": "user"
+    }
+  ]
+}'`)
+            }
+          >
+            <FaCopy />
+          </button>
+        </div>
       </section>
 
       <section className="mb-6">
         <h2 className="mb-2 text-2xl font-semibold">Example Response</h2>
-        <p>
+        <p className="mb-2">
           A successful response will contain the response from the LLM agent.
           Example successful response:
         </p>
-        <pre className="rounded bg-gray-200 p-4">
-          {`{
+        <div className="relative rounded bg-gray-800 p-4 text-white">
+          <code>
+            <pre>{`{
   "response": {
     "content": "Response from the agent",
     "role": "assistant"
   }
-}`}
-        </pre>
+}`}</pre>
+          </code>
+          <button
+            className="absolute right-2 top-2"
+            onClick={() =>
+              copyToClipboard(`{
+  "response": {
+    "content": "Response from the agent",
+    "role": "assistant"
+  }
+}`)
+            }
+          >
+            <FaCopy />
+          </button>
+        </div>
         <h3 className="mt-4 text-xl font-semibold">Response Parameters</h3>
         <ul className="list-inside list-disc">
           <li>
@@ -130,7 +219,7 @@ const Documentation = () => {
           </li>
           <li>
             <strong>role</strong> (string): The role of the response sender,
-            always <code className="rounded bg-gray-200 p-1">assistant</code>.
+            always <code className="rounded p-1">assistant</code>.
           </li>
         </ul>
       </section>
@@ -144,8 +233,7 @@ const Documentation = () => {
           </li>
           <li>
             <strong>404 Not Found</strong>: Returned if the agent with the
-            specified <code className="rounded bg-gray-200 p-1">agentId</code>{" "}
-            is not found.
+            specified <code className="rounded p-1">agentId</code> is not found.
           </li>
           <li>
             <strong>500 Internal Server Error</strong>: Returned in case of an
@@ -156,11 +244,23 @@ const Documentation = () => {
 
       <section className="mb-6">
         <h2 className="mb-2 text-2xl font-semibold">Example Error</h2>
-        <pre className="rounded bg-gray-200 p-4">
-          {`{
+        <div className="relative rounded bg-gray-800 p-4 text-white">
+          <code>
+            <pre>{`{
   "error": "Invalid request body"
-}`}
-        </pre>
+}`}</pre>
+          </code>
+          <button
+            className="absolute right-2 top-2"
+            onClick={() =>
+              copyToClipboard(`{
+             "error": "Invalid request body"
+           }`)
+            }
+          >
+            <FaCopy />
+          </button>
+        </div>
       </section>
 
       <section>
@@ -169,8 +269,7 @@ const Documentation = () => {
           This API allows you to send requests to an LLM agent and receive
           responses based on the provided messages. Make sure all required
           fields are included in the request body and that requests are sent
-          with the correct{" "}
-          <code className="rounded bg-gray-200 p-1">agentId</code>.
+          with the correct <code className="rounded p-1">agentId</code>.
         </p>
       </section>
     </div>
