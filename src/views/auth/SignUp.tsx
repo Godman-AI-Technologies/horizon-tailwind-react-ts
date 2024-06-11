@@ -83,10 +83,10 @@ export default function SignUp() {
         <h4 className="mb-2.5 text-4xl font-bold text-navy-700 dark:text-white">
           Sign Up
         </h4>
-        <p className="mb-9 ml-1 text-base text-gray-600">
+        <p className="mb-6 ml-1 text-base text-gray-600">
           Enter your email and password to sign up!
         </p>
-        <div
+        {/*<div
           className="mb-6 flex h-[50px] w-full items-center justify-center gap-2 rounded-xl bg-lightPrimary hover:cursor-pointer dark:bg-navy-800"
           onClick={handleGoogleSignUp}
         >
@@ -101,7 +101,7 @@ export default function SignUp() {
           <div className="h-px w-full bg-gray-200 dark:bg-navy-700" />
           <p className="text-base text-gray-600 dark:text-white"> or </p>
           <div className="h-px w-full bg-gray-200 dark:bg-navy-700" />
-        </div>
+        </div>*/}
         <form onSubmit={handleSignUp}>
           {/* Username */}
           <InputField
