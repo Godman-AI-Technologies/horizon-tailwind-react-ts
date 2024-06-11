@@ -66,13 +66,13 @@ export default function RTL() {
           className={`mx-[12px] h-full flex-none transition-all md:pe-2 xl:mr-[313px]`}
         >
           {/* Routes */}
-          <div className="h-full">
+          <div className="min-h-screen">
             <Navbar
               onOpenSidenav={() => setOpen(true)}
               brandText={currentRoute}
               secondary={getActiveNavbar(routes)}
             />
-            <div className="pt-5s mx-auto mb-auto min-h-screen p-2 dark:text-gray-200 md:pr-2">
+            <div className="pt-5s max-h-[100%- . /] mx-auto mb-auto p-2 dark:text-gray-200 md:pr-2">
               <Routes>
                 {getRoutes(routes)}
 
