@@ -90,11 +90,19 @@ const Chat = () => {
 
   return (
     <div className="p-4">
-      <div className="h-64 overflow-auto rounded p-4">
+      <div className="flex h-64 flex-col overflow-auto rounded p-4">
         {messages.map((message, index) => (
-          <p key={index} className="mb-1">
+          <div
+            key={index}
+            className={
+              " max-w-[40ch] rounded-xl border border-brand-200 px-3 py-2 " +
+              (message.role === "user"
+                ? "mb-2 self-end bg-brand-500 text-gray-100"
+                : "mb-3 self-start bg-white")
+            }
+          >
             {message.content}
-          </p>
+          </div>
         ))}
       </div>
       <form onSubmit={sendMessage} className="mt-4">
@@ -102,12 +110,12 @@ const Chat = () => {
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          className="w-full rounded border p-2"
+          className="w-full rounded-xl border p-2 outline-brand-500 ring-brand-500"
           placeholder="Type your message..."
         />
         <button
           type="submit"
-          className="mt-2 rounded bg-blue-500 p-2 text-white"
+          className="mt-2 rounded-xl bg-brand-500 p-2 text-white"
         >
           Send
         </button>
