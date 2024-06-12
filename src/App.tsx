@@ -6,6 +6,7 @@ import AuthLayout from "layouts/auth";
 import AuthHandler from "app/utils/auth";
 import SignIn from "views/auth/SignIn";
 import SignUp from "views/auth/SignUp";
+import { AgentLayout } from "layouts/agents";
 
 const App = () => {
   return (
@@ -39,6 +40,14 @@ const App = () => {
         element={
           <AuthHandler>
             <RtlLayout />
+          </AuthHandler>
+        }
+      />
+      <Route
+        path="agents/*"
+        element={
+          <AuthHandler>
+            <AgentLayout />
           </AuthHandler>
         }
       />
