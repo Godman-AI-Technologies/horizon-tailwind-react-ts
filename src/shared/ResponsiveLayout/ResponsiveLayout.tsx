@@ -11,7 +11,7 @@ interface LayoutProps {
   rightSide: ISide;
 }
 
-const SwitchLayout: React.FC<LayoutProps> = ({
+export const ResponsiveLayout: React.FC<LayoutProps> = ({
   leftSide,
   centerSide,
   rightSide,
@@ -19,6 +19,63 @@ const SwitchLayout: React.FC<LayoutProps> = ({
   const [selectedColumn, setSelectedColumn] = useState<
     "left" | "center" | "right"
   >("left");
+  const [leftWidth, setLeftWidth] = useState(1 / 3);
+  const [centerWidth, setCenterWidth] = useState(1 / 3);
+  const [rightWidth, setRightWidth] = useState(1 / 3);
+
+  const [tabletLeftWidth, setTabletLeftWidth] = useState(1 / 2);
+  const [tabletRightWidth, setTabletRightWidth] = useState(1 / 2);
+
+  const handleMouseDown = (
+    e: React.MouseEvent,
+    column: "leftDivider" | "rightDivider" | "tabletDivider"
+  ) => {
+    e.preventDefault();
+    const startX = e.clientX;
+    const startWidths = {
+      left: leftWidth,
+      center: centerWidth,
+      right: rightWidth,
+      tabletLeft: tabletLeftWidth,
+      tabletRight: tabletRightWidth,
+    };
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const deltaX = e.clientX - startX;
+      const deltaWidth = deltaX / window.innerWidth;
+
+      if (column === "leftDivider") {
+        setLeftWidth(
+          Math.max(0.1, Math.min(0.9, startWidths.left + deltaWidth))
+        );
+        setCenterWidth(
+          Math.max(0.1, Math.min(0.9, startWidths.center - deltaWidth))
+        );
+      } else if (column === "rightDivider") {
+        setCenterWidth(
+          Math.max(0.1, Math.min(0.9, startWidths.center + deltaWidth))
+        );
+        setRightWidth(
+          Math.max(0.1, Math.min(0.9, startWidths.right - deltaWidth))
+        );
+      } else if (column === "tabletDivider") {
+        setTabletLeftWidth(
+          Math.max(0.1, Math.min(0.9, startWidths.tabletLeft + deltaWidth))
+        );
+        setTabletRightWidth(
+          Math.max(0.1, Math.min(0.9, startWidths.tabletRight - deltaWidth))
+        );
+      }
+    };
+
+    const handleMouseUp = () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+  };
 
   return (
     <div className="mt-3 flex h-full w-full flex-col md:flex-row">
@@ -65,7 +122,7 @@ const SwitchLayout: React.FC<LayoutProps> = ({
 
       {/* Tablet layout */}
       <div className="hidden w-full md:flex lg:hidden">
-        <div className="w-1/2">
+        <div style={{ width: `${tabletLeftWidth * 100}%` }}>
           <div className="mb-4 flex items-center justify-between">
             <button
               className={`flex-1 px-4 py-2 ${
@@ -88,23 +145,43 @@ const SwitchLayout: React.FC<LayoutProps> = ({
               {rightSide.title}
             </button>
           </div>
+
           <div>
             {selectedColumn === "left" || selectedColumn === "center"
               ? leftSide.component
               : rightSide.component}
           </div>
         </div>
-        <div className="w-1/2">{centerSide.component}</div>
+        <div
+          className="cursor-col-resize"
+          onMouseDown={(e) => handleMouseDown(e, "tabletDivider")}
+          style={{ width: "5px", backgroundColor: "gray", height: "100vh" }}
+        />
+        <div style={{ width: `${tabletRightWidth * 100}%` }}>
+          {centerSide.component}
+        </div>
       </div>
 
       {/* Desktop layout */}
       <div className="hidden h-full w-full lg:flex">
-        <div className="w-1/3">{leftSide.component}</div>
-        <div className="w-1/3">{centerSide.component}</div>
-        <div className="w-1/3">{rightSide.component}</div>
+        <div style={{ width: `${leftWidth * 100}%` }}>{leftSide.component}</div>
+        <div
+          className="cursor-col-resize"
+          onMouseDown={(e) => handleMouseDown(e, "leftDivider")}
+          style={{ width: "5px", backgroundColor: "gray", height: "100vh" }}
+        />
+        <div style={{ width: `${centerWidth * 100}%` }}>
+          {centerSide.component}
+        </div>
+        <div
+          className="cursor-col-resize"
+          onMouseDown={(e) => handleMouseDown(e, "rightDivider")}
+          style={{ width: "5px", backgroundColor: "gray", height: "100vh" }}
+        />
+        <div style={{ width: `${rightWidth * 100}%` }}>
+          {rightSide.component}
+        </div>
       </div>
     </div>
   );
 };
-
-export default SwitchLayout;

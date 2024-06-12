@@ -1,4 +1,4 @@
-import ResponsiveLayout from "shared/ResponsiveLayout/ResponsiveLayout";
+import { ResponsiveLayout } from "shared/ResponsiveLayout";
 
 export const AgentLayout: React.FC = () => {
   document.documentElement.dir = "agents";
