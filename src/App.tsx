@@ -7,6 +7,7 @@ import AuthHandler from "app/utils/auth";
 import SignIn from "views/auth/SignIn";
 import SignUp from "views/auth/SignUp";
 import { AgentLayout } from "layouts/agents";
+import { KnowledgeLayout } from "layouts/knowledge";
 
 const App = () => {
   return (
@@ -56,6 +57,22 @@ const App = () => {
         element={
           <AuthHandler>
             <AgentLayout type="update" />
+          </AuthHandler>
+        }
+      />
+      <Route
+        path="knowledge/"
+        element={
+          <AuthHandler>
+            <KnowledgeLayout type="create" />
+          </AuthHandler>
+        }
+      />
+      <Route
+        path="knowledge/:id"
+        element={
+          <AuthHandler>
+            <KnowledgeLayout type="update" />
           </AuthHandler>
         }
       />
