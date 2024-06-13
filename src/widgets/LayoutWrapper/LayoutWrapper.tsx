@@ -1,18 +1,15 @@
 import { ReactNode } from "react";
+import { Header } from "./components/Header";
 
 interface ILayoutProps {
-  headerTitle: string;
   children: ReactNode;
 }
 
-export const LayoutWrapper: React.FC<ILayoutProps> = ({
-  children,
-  headerTitle,
-}) => {
+export const LayoutWrapper: React.FC<ILayoutProps> = ({ children }) => {
   document.documentElement.dir = "agents";
   return (
     <div className="fixed h-full w-full">
-      <header>{headerTitle}</header>
+      <Header />
       {children}
     </div>
   );

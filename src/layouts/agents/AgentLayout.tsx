@@ -4,7 +4,7 @@ import { LayoutWrapper } from "widgets/LayoutWrapper";
 export const AgentLayout: React.FC = () => {
   document.documentElement.dir = "agents";
   return (
-    <LayoutWrapper headerTitle="Agents">
+    <LayoutWrapper>
       <ResponsiveLayout
         leftSide={{ title: "Left", component: <div>left</div> }}
         centerSide={{ title: "center", component: <div>center</div> }}
