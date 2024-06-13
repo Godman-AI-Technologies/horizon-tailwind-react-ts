@@ -35,6 +35,7 @@ const isILLMResponse = (data: any): data is ILLMResponse => {
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [typing, setTyping] = useState(false);
 
   // Function to fetch chat history from API
   const fetchChatHistory = async () => {
@@ -50,6 +51,14 @@ const Chat = () => {
   const sendMessage = async (event: any) => {
     event.preventDefault();
 
+    const requestMessage = newMessage;
+
+    await setMessages((val) => [
+      ...val,
+      { role: "user", content: requestMessage },
+    ]);
+    setNewMessage("");
+    setTyping(true);
     try {
       const response = await fetch(
         `${process.env.REACT_APP_USER_API}/agents/${process.env.REACT_APP_ASSISTANT_ID}/llm`,
@@ -59,7 +68,7 @@ const Chat = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            messages: [...messages, { content: newMessage, role: "user" }],
+            messages: [...messages, { content: requestMessage, role: "user" }],
           }),
         }
       );
@@ -72,16 +81,12 @@ const Chat = () => {
         throw new Error("Response format is incorrect");
       }
       console.log(data);
-      await setMessages((val) => [
-        ...val,
-        { role: "user", content: newMessage },
-        data.message,
-      ]);
+      await setMessages((val) => [...val, data.message]);
       Cookies.set("assistantChat", JSON.stringify(messages));
     } catch (err) {
       console.error(err);
     }
-    setNewMessage("");
+    setTyping(false);
   };
 
   useEffect(() => {
@@ -104,6 +109,16 @@ const Chat = () => {
             {message.content}
           </div>
         ))}
+        {typing ? (
+          <div className="mt-2 flex h-max items-center justify-center space-x-1 self-start py-2">
+            <span className="sr-only">Loading...</span>
+            <div className="h-4 w-4 animate-bounce rounded-full bg-brand-400 [animation-delay:-0.3s]"></div>
+            <div className="h-4 w-4 animate-bounce rounded-full bg-brand-400 [animation-delay:-0.15s]"></div>
+            <div className="h-4 w-4 animate-bounce rounded-full bg-brand-400"></div>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
       <form onSubmit={sendMessage} className="relative mt-4">
         <input
