@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { MdDeleteOutline } from "react-icons/md";
 
 interface ILLMMessage {
   content: string;
@@ -36,6 +37,8 @@ const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [typing, setTyping] = useState(false);
+  const lastMessageRef = useRef<HTMLDivElement>(null);
+  const typingRef = useRef<HTMLDivElement>(null);
 
   // Function to fetch chat history from API
   const fetchChatHistory = async () => {
@@ -89,16 +92,35 @@ const Chat = () => {
     setTyping(false);
   };
 
+  // Function to clear all messages
+  const clearMessages = () => {
+    setMessages([]);
+    Cookies.remove("assistantChat");
+  };
+
   useEffect(() => {
     fetchChatHistory();
   }, []);
 
+  useEffect(() => {
+    if (lastMessageRef.current) {
+      lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
+  useEffect(() => {
+    if (typing && typingRef.current) {
+      typingRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [typing]);
+
   return (
     <div className="p-4">
-      <div className="flex h-[60vh] flex-col overflow-auto rounded p-4">
+      <div className="hide-scrollbar flex h-[60vh] flex-col overflow-auto rounded p-4">
         {messages.map((message, index) => (
           <div
             key={index}
+            ref={index === messages.length - 1 ? lastMessageRef : null}
             className={
               "max-w-[40ch] rounded-xl px-3 py-2 outline outline-2 outline-brand-500 " +
               (message.role === "user"
@@ -110,7 +132,10 @@ const Chat = () => {
           </div>
         ))}
         {typing ? (
-          <div className="mt-2 flex h-max items-center justify-center space-x-1 self-start py-2">
+          <div
+            ref={typingRef}
+            className="mt-2 flex h-max items-center justify-center space-x-1 self-start py-2"
+          >
             <span className="sr-only">Loading...</span>
             <div className="h-4 w-4 animate-bounce rounded-full bg-brand-400 [animation-delay:-0.3s]"></div>
             <div className="h-4 w-4 animate-bounce rounded-full bg-brand-400 [animation-delay:-0.15s]"></div>
@@ -120,7 +145,14 @@ const Chat = () => {
           <></>
         )}
       </div>
-      <form onSubmit={sendMessage} className="relative mt-4">
+      <form onSubmit={sendMessage} className="relative mt-4 flex items-center">
+        <button
+          type="button"
+          onClick={clearMessages}
+          className="m-1 mr-2 rounded-full bg-gray-100/0 bg-gray-200 p-2 text-gray-600 transition-all hover:bg-gray-100"
+        >
+          <MdDeleteOutline className="h-6 w-6"></MdDeleteOutline>
+        </button>
         <input
           type="text"
           value={newMessage}
@@ -130,7 +162,7 @@ const Chat = () => {
         />
         <button
           type="submit"
-          className="absolute m-1 -ml-1.5 translate-x-[-100%] rounded-xl bg-brand-500 p-2 text-white"
+          className="absolute right-0 m-1 -ml-1.5 rounded-xl bg-brand-500 p-2 text-white"
         >
           Send
         </button>
