@@ -47,8 +47,8 @@ export const ResponsiveLayout: React.FC<LayoutProps> = ({
   return (
     <div className="flex h-full w-full flex-col md:flex-row">
       {/* Mobile layout */}
-      <div className="mb-4 flex w-full justify-center md:hidden">
-        <div className="flex w-full overflow-hidden rounded-full bg-gray-200">
+      <div className="flex w-full justify-center md:hidden">
+        <div className="flex w-full overflow-hidden bg-gray-200">
           <button
             className={`flex-1 px-4 py-2 ${
               selectedColumn === "left"

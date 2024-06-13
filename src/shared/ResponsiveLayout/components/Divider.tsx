@@ -95,10 +95,13 @@ export const Divider: React.FC<IDividerProps> = ({
   };
 
   return (
-    <div
-      className="cursor-col-resize"
-      onMouseDown={(e) => handleMouseDown(e, column)}
-      style={{ width: "5px", backgroundColor: "gray", height: "100%" }}
-    />
+    <div>
+      <div
+        className="h-full w-2 cursor-col-resize"
+        onMouseDown={(e) => handleMouseDown(e, column)}
+      >
+        <div className="h-full w-[2px] bg-gray-800"></div>
+      </div>
+    </div>
   );
 };
