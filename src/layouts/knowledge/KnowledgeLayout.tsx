@@ -24,7 +24,7 @@ export const KnowledgeLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
   }, [id, type]);
 
   return (
-    <LayoutWrapper name="Unknown">
+    <LayoutWrapper name="Unknown" backwardPath="/admin/dashboard/knowledge">
       <ResponsiveLayout
         leftSide={{
           title: "Left",
