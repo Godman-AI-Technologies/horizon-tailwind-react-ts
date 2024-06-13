@@ -85,7 +85,6 @@ const Chat = () => {
       }
       console.log(data);
       await setMessages((val) => [...val, data.message]);
-      Cookies.set("assistantChat", JSON.stringify(messages));
     } catch (err) {
       console.error(err);
     }
@@ -106,6 +105,7 @@ const Chat = () => {
     if (lastMessageRef.current) {
       lastMessageRef.current.scrollIntoView({ behavior: "smooth" });
     }
+    Cookies.set("assistantChat", JSON.stringify(messages));
   }, [messages]);
 
   useEffect(() => {
@@ -125,7 +125,7 @@ const Chat = () => {
               "max-w-[40ch] rounded-xl px-3 py-2 outline outline-2 outline-brand-500 " +
               (message.role === "user"
                 ? "mb-3 self-end bg-white"
-                : "mb-2 self-start bg-brand-400 text-gray-100")
+                : "mb-2 self-start bg-brand-500 text-gray-100")
             }
           >
             {message.content}
@@ -149,20 +149,20 @@ const Chat = () => {
         <button
           type="button"
           onClick={clearMessages}
-          className="m-1 mr-2 rounded-full bg-gray-100/0 bg-gray-200 p-2 text-gray-600 transition-all hover:bg-gray-100"
+          className="m-1 rounded-full bg-gray-100/0 bg-gray-200 p-2 text-brand-300 transition-all hover:bg-gray-100"
         >
-          <MdDeleteOutline className="h-6 w-6"></MdDeleteOutline>
+          <MdDeleteOutline className="h-7 w-7"></MdDeleteOutline>
         </button>
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          className="w-full rounded-xl p-3 outline-2 outline-brand-500 focus:outline"
+          className="w-full rounded-full p-3 pl-5 outline outline-1 outline-gray-600 focus:outline-brand-500"
           placeholder="Type your message..."
         />
         <button
           type="submit"
-          className="absolute right-0 m-1 -ml-1.5 rounded-xl bg-brand-500 p-2 text-white"
+          className="absolute right-0 m-1 -ml-1.5 rounded-full bg-brand-500 p-2 text-white"
         >
           Send
         </button>
