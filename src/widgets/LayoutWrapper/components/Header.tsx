@@ -3,12 +3,16 @@ import { FaEdit } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
-export const Header: React.FC = () => {
+interface IHeaderProps {
+  backwardPath?: string;
+}
+
+export const Header: React.FC<IHeaderProps> = ({ backwardPath = "/" }) => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleBackClick = () => {
-    navigate("/");
+    navigate(backwardPath);
   };
 
   const handleEditClick = () => {
@@ -37,27 +41,11 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Центральный компонент */}
-      <nav className="absolute left-1/2 flex -translate-x-1/2 transform space-x-4">
-        <button
-          onClick={() => navigate("/development")}
-          className="hover:underline"
-        >
-          Разработка
-        </button>
-        <button
-          onClick={() => navigate("/history")}
-          className="hover:underline"
-        >
-          История
-        </button>
-      </nav>
-
       {/* Правый компонент */}
       <div className="flex items-center space-x-4">
-        <span>Последнее сохранение: 10:30</span>
+        <span>Last update: 10:30</span>
         <button className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
-          Сохранить
+          Create
         </button>
       </div>
 
