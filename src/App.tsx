@@ -44,7 +44,7 @@ const App = () => {
         }
       />
       <Route
-        path="agents/*"
+        path="agents/:id"
         element={
           <AuthHandler>
             <AgentLayout />
