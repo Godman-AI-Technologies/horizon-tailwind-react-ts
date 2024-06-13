@@ -187,7 +187,7 @@ export const ResponsiveLayout: React.FC<LayoutProps> = ({
         <div
           className="cursor-col-resize"
           onMouseDown={(e) => handleMouseDown(e, "tabletDivider")}
-          style={{ width: "5px", backgroundColor: "gray", height: "100vh" }}
+          style={{ width: "5px", backgroundColor: "gray", height: "100%" }}
         />
         <div style={{ width: `${tabletRightWidth * 100}%` }}>
           {centerSide.component}
@@ -200,7 +200,7 @@ export const ResponsiveLayout: React.FC<LayoutProps> = ({
         <div
           className="cursor-col-resize"
           onMouseDown={(e) => handleMouseDown(e, "leftDivider")}
-          style={{ width: "5px", backgroundColor: "gray", height: "100vh" }}
+          style={{ width: "5px", backgroundColor: "gray", height: "100%" }}
         />
         <div style={{ width: `${centerWidth * 100}%` }}>
           {centerSide.component}
@@ -208,7 +208,7 @@ export const ResponsiveLayout: React.FC<LayoutProps> = ({
         <div
           className="cursor-col-resize"
           onMouseDown={(e) => handleMouseDown(e, "rightDivider")}
-          style={{ width: "5px", backgroundColor: "gray", height: "100vh" }}
+          style={{ width: "5px", backgroundColor: "gray", height: "100%" }}
         />
         <div style={{ width: `${rightWidth * 100}%` }}>
           {rightSide.component}
