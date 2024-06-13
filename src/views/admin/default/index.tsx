@@ -1,16 +1,11 @@
+import Chat from "components/assistant-chat";
 import ContentLayout from "shared/ContentLayout/ContentLayout";
-import SwitchLayout from "shared/SwitchLayout/SwitchLayout";
 
 const Home = () => {
   return (
     <ContentLayout>
-      <SwitchLayout
-        leftSide={{ title: "Info", component: <div>Info</div> }}
-        rightSide={{
-          title: "Assistent",
-          component: <div>Godman assistent</div>,
-        }}
-      />
+      <div>Info</div>
+      <Chat className="max-w-2xl rounded-md bg-white shadow-[0_0_50px_40px_#FFF]" />
     </ContentLayout>
   );
 };

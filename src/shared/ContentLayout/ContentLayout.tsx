@@ -1,9 +1,9 @@
-interface IContentProps {
-  children: React.ReactNode;
-}
+import { ReactNode } from "react";
 
-const ContentLayout: React.FC<IContentProps> = ({ children }) => {
-  return <div className="mt-3">{children}</div>;
+interface IContentProps {}
+
+const ContentLayout: React.FC<any> = (props: { children: ReactNode }) => {
+  return <div className="mt-3">{props.children}</div>;
 };
 
 export default ContentLayout;
