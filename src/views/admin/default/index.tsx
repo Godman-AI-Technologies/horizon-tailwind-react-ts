@@ -1,13 +1,11 @@
-import Chat from "components/chat";
+import Chat from "components/assistant-chat";
 import ContentLayout from "shared/ContentLayout/ContentLayout";
-import SwitchLayout from "shared/SwitchLayout/SwitchLayout";
 
 const Home = () => {
   return (
     <ContentLayout>
-      <ContentLayout />
       <div>Info</div>
-      <Chat />
+      <Chat className="max-w-2xl rounded-md bg-white shadow-[0_0_50px_40px_#FFF]" />
     </ContentLayout>
   );
 };

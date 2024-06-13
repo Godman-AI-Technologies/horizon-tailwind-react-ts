@@ -1,6 +1,5 @@
 import Cookies from "js-cookie";
 import React, { useState, useEffect, useRef } from "react";
-import { MdDeleteOutline } from "react-icons/md";
 
 interface ILLMMessage {
   content: string;
@@ -33,8 +32,18 @@ const isILLMResponse = (data: any): data is ILLMResponse => {
   );
 };
 
-const Chat = () => {
-  const [messages, setMessages] = useState([]);
+interface ChatProps {
+  className?: string;
+  inputPlaceholder?: string;
+  buttonText?: string;
+}
+
+const Chat: React.FC<ChatProps> = ({
+  className = "",
+  inputPlaceholder = "Type your message...",
+  buttonText = "Send",
+}) => {
+  const [messages, setMessages] = useState<ILLMMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [typing, setTyping] = useState(false);
   const lastMessageRef = useRef<HTMLDivElement>(null);
@@ -44,7 +53,9 @@ const Chat = () => {
   const fetchChatHistory = async () => {
     try {
       const assistantChat = Cookies.get("assistantChat");
-      setMessages(JSON.parse(assistantChat));
+      if (assistantChat) {
+        setMessages(JSON.parse(assistantChat));
+      }
     } catch (err) {
       console.error(err);
     }
@@ -56,12 +67,10 @@ const Chat = () => {
 
     const requestMessage = newMessage;
 
-    await setMessages((val) => [
-      ...val,
-      { role: "user", content: requestMessage },
-    ]);
+    setMessages((val) => [...val, { role: "user", content: requestMessage }]);
     setNewMessage("");
     setTyping(true);
+
     try {
       const response = await fetch(
         `${process.env.REACT_APP_USER_API}/agents/${process.env.REACT_APP_ASSISTANT_ID}/llm`,
@@ -79,12 +88,10 @@ const Chat = () => {
         throw new Error("Failed to get agents");
       }
       const data = await response.json();
-      console.log(data);
       if (!isILLMResponse(data)) {
         throw new Error("Response format is incorrect");
       }
-      console.log(data);
-      await setMessages((val) => [...val, data.message]);
+      setMessages((val) => [...val, data.message]);
     } catch (err) {
       console.error(err);
     }
@@ -115,8 +122,8 @@ const Chat = () => {
   }, [typing]);
 
   return (
-    <div className="p-4">
-      <div className="hide-scrollbar flex h-[60vh] flex-col overflow-auto rounded p-4">
+    <div className={`p-4 ${className}`}>
+      <div className="hide-scrollbar flex h-[60vh] flex-col overflow-auto rounded p-0.5">
         {messages.map((message, index) => (
           <div
             key={index}
@@ -124,8 +131,8 @@ const Chat = () => {
             className={
               "max-w-[40ch] rounded-xl px-3 py-2 outline outline-2 outline-brand-500 " +
               (message.role === "user"
-                ? "mb-3 self-end bg-white"
-                : "mb-2 self-start bg-brand-500 text-gray-100")
+                ? "mb-2 self-end bg-white"
+                : "mb-3 self-start bg-brand-400 text-gray-100")
             }
           >
             {message.content}
@@ -149,22 +156,35 @@ const Chat = () => {
         <button
           type="button"
           onClick={clearMessages}
-          className="m-1 rounded-full bg-gray-100/0 bg-gray-200 p-2 text-brand-300 transition-all hover:bg-gray-100"
+          className="m-1 mr-2 rounded-full bg-gray-200 p-2 text-gray-600 hover:bg-gray-300"
         >
-          <MdDeleteOutline className="h-7 w-7"></MdDeleteOutline>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
         </button>
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          className="w-full rounded-full p-3 pl-5 outline outline-1 outline-gray-600 focus:outline-brand-500"
-          placeholder="Type your message..."
+          className="w-full rounded-full p-3 outline outline-2 outline-gray-500 focus:outline-brand-500"
+          placeholder={inputPlaceholder}
         />
         <button
           type="submit"
           className="absolute right-0 m-1 -ml-1.5 rounded-full bg-brand-500 p-2 text-white"
         >
-          Send
+          {buttonText}
         </button>
       </form>
     </div>
