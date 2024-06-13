@@ -44,27 +44,59 @@ export const ResponsiveLayout: React.FC<LayoutProps> = ({
       const deltaX = e.clientX - startX;
       const deltaWidth = deltaX / window.innerWidth;
 
+      const maxDelta = 0.1; // Максимальное изменение ширины - 10%
+
       if (column === "leftDivider") {
-        setLeftWidth(
-          Math.max(0.1, Math.min(0.9, startWidths.left + deltaWidth))
+        const newLeftWidth = Math.max(
+          0.1,
+          Math.min(0.9, startWidths.left + deltaWidth)
         );
-        setCenterWidth(
-          Math.max(0.1, Math.min(0.9, startWidths.center - deltaWidth))
+        const newCenterWidth = Math.max(
+          0.1,
+          Math.min(0.9, startWidths.center - deltaWidth)
         );
+
+        if (
+          Math.abs(newLeftWidth - startWidths.left) <= maxDelta &&
+          Math.abs(newCenterWidth - startWidths.center) <= maxDelta
+        ) {
+          setLeftWidth(newLeftWidth);
+          setCenterWidth(newCenterWidth);
+        }
       } else if (column === "rightDivider") {
-        setCenterWidth(
-          Math.max(0.1, Math.min(0.9, startWidths.center + deltaWidth))
+        const newCenterWidth = Math.max(
+          0.1,
+          Math.min(0.9, startWidths.center + deltaWidth)
         );
-        setRightWidth(
-          Math.max(0.1, Math.min(0.9, startWidths.right - deltaWidth))
+        const newRightWidth = Math.max(
+          0.1,
+          Math.min(0.9, startWidths.right - deltaWidth)
         );
+
+        if (
+          Math.abs(newCenterWidth - startWidths.center) <= maxDelta &&
+          Math.abs(newRightWidth - startWidths.right) <= maxDelta
+        ) {
+          setCenterWidth(newCenterWidth);
+          setRightWidth(newRightWidth);
+        }
       } else if (column === "tabletDivider") {
-        setTabletLeftWidth(
-          Math.max(0.1, Math.min(0.9, startWidths.tabletLeft + deltaWidth))
+        const newTabletLeftWidth = Math.max(
+          0.1,
+          Math.min(0.9, startWidths.tabletLeft + deltaWidth)
         );
-        setTabletRightWidth(
-          Math.max(0.1, Math.min(0.9, startWidths.tabletRight - deltaWidth))
+        const newTabletRightWidth = Math.max(
+          0.1,
+          Math.min(0.9, startWidths.tabletRight - deltaWidth)
         );
+
+        if (
+          Math.abs(newTabletLeftWidth - startWidths.tabletLeft) <= maxDelta &&
+          Math.abs(newTabletRightWidth - startWidths.tabletRight) <= maxDelta
+        ) {
+          setTabletLeftWidth(newTabletLeftWidth);
+          setTabletRightWidth(newTabletRightWidth);
+        }
       }
     };
 
