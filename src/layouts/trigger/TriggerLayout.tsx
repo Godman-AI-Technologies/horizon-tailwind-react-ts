@@ -4,43 +4,31 @@ import { ResponsiveLayout } from "shared/ResponsiveLayout";
 import { SwitchLayout } from "shared/SwitchLayout";
 import { LayoutWrapper } from "widgets/LayoutWrapper";
 
-interface IKnowledgeLayoutProps {
+interface ITriggerLayoutProps {
   type: "create" | "update";
 }
 
-export const KnowledgeLayout: React.FC<IKnowledgeLayoutProps> = ({ type }) => {
-  document.documentElement.dir = "knowledge";
+export const TriggerLayout: React.FC<ITriggerLayoutProps> = ({ type }) => {
+  document.documentElement.dir = "agents";
   const { id } = useParams();
 
   useEffect(() => {
     if (type === "create" || !id) return;
     setTimeout(async () => {
       try {
-        console.log("KNOWLEDGE");
+        console.log("trigger");
       } catch (error) {
-        console.error("Error on fetching knowledge:", error);
+        console.error("Error on fetching trigger:", error);
       }
     });
   }, [id, type]);
 
   return (
-    <LayoutWrapper name="Unknown" backwardPath="/admin/dashboard/knowledge">
+    <LayoutWrapper name="Unknown" backwardPath="/admin/dashboard/triggers">
       <ResponsiveLayout
         leftSide={{
           title: "Left",
-          component: (
-            <div>
-              <header className="h-8 text-center text-xl font-bold">
-                Props Settings
-              </header>
-              <SwitchLayout
-                sides={[
-                  { title: "Parsing", component: <div>Parsing</div> },
-                  { title: "File", component: <div>File</div> },
-                ]}
-              />
-            </div>
-          ),
+          component: <div>triggers</div>,
         }}
         centerSide={{ title: "center", component: <div>center</div> }}
         rightSide={{
