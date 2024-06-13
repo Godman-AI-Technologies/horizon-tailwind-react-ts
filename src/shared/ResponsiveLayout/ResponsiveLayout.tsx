@@ -47,50 +47,52 @@ export const ResponsiveLayout: React.FC<LayoutProps> = ({
   return (
     <div className="flex h-full w-full flex-col md:flex-row">
       {/* Mobile layout */}
-      <div className="flex w-full justify-center md:hidden">
-        <div className="flex w-full overflow-hidden bg-gray-200">
-          <button
-            className={`flex-1 px-4 py-2 ${
-              selectedColumn === "left"
-                ? "bg-blue-500 text-white"
-                : "text-black bg-gray-200"
-            }`}
-            onClick={() => setSelectedColumn("left")}
-          >
-            {leftSide.title}
-          </button>
-          <button
-            className={`flex-1 px-4 py-2 ${
-              selectedColumn === "center"
-                ? "bg-blue-500 text-white"
-                : "text-black bg-gray-200"
-            }`}
-            onClick={() => setSelectedColumn("center")}
-          >
-            {centerSide.title}
-          </button>
-          <button
-            className={`flex-1 px-4 py-2 ${
-              selectedColumn === "right"
-                ? "bg-blue-500 text-white"
-                : "text-black bg-gray-200"
-            }`}
-            onClick={() => setSelectedColumn("right")}
-          >
-            {rightSide.title}
-          </button>
+      <div className="h-full">
+        <div className="flex w-full justify-center bg-red-200 md:hidden">
+          <div className="flex w-full overflow-hidden bg-gray-200">
+            <button
+              className={`flex-1 px-4 py-2 ${
+                selectedColumn === "left"
+                  ? "bg-blue-500 text-white"
+                  : "text-black bg-gray-200"
+              }`}
+              onClick={() => setSelectedColumn("left")}
+            >
+              {leftSide.title}
+            </button>
+            <button
+              className={`flex-1 px-4 py-2 ${
+                selectedColumn === "center"
+                  ? "bg-blue-500 text-white"
+                  : "text-black bg-gray-200"
+              }`}
+              onClick={() => setSelectedColumn("center")}
+            >
+              {centerSide.title}
+            </button>
+            <button
+              className={`flex-1 px-4 py-2 ${
+                selectedColumn === "right"
+                  ? "bg-blue-500 text-white"
+                  : "text-black bg-gray-200"
+              }`}
+              onClick={() => setSelectedColumn("right")}
+            >
+              {rightSide.title}
+            </button>
+          </div>
         </div>
-      </div>
-      <div className="md:hidden">
-        {selectedColumn === "left" && <div>{leftSide.component}</div>}
-        {selectedColumn === "center" && <div>{centerSide.component}</div>}
-        {selectedColumn === "right" && <div>{rightSide.component}</div>}
+        <div className="h-full md:hidden">
+          {selectedColumn === "left" && leftSide.component}
+          {selectedColumn === "center" && centerSide.component}
+          {selectedColumn === "right" && rightSide.component}
+        </div>
       </div>
 
       {/* Tablet layout */}
       <div className="hidden w-full md:flex lg:hidden">
         <div style={{ width: `${tabletLeftWidth * 100}%` }}>
-          <div className="mb-4 flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <button
               className={`flex-1 px-4 py-2 ${
                 selectedColumn === "left" || selectedColumn === "center"
@@ -113,7 +115,7 @@ export const ResponsiveLayout: React.FC<LayoutProps> = ({
             </button>
           </div>
 
-          <div>
+          <div className="h-full">
             {selectedColumn === "left" || selectedColumn === "center"
               ? leftSide.component
               : rightSide.component}

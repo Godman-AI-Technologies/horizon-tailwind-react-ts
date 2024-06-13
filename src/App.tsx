@@ -44,10 +44,18 @@ const App = () => {
         }
       />
       <Route
+        path="agents/"
+        element={
+          <AuthHandler>
+            <AgentLayout type="create" />
+          </AuthHandler>
+        }
+      />
+      <Route
         path="agents/:id"
         element={
           <AuthHandler>
-            <AgentLayout />
+            <AgentLayout type="update" />
           </AuthHandler>
         }
       />

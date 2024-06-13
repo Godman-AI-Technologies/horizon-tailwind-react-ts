@@ -4,10 +4,14 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
 interface IHeaderProps {
+  name: string;
   backwardPath?: string;
 }
 
-export const Header: React.FC<IHeaderProps> = ({ backwardPath = "/" }) => {
+export const Header: React.FC<IHeaderProps> = ({
+  name,
+  backwardPath = "/",
+}) => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -34,7 +38,7 @@ export const Header: React.FC<IHeaderProps> = ({ backwardPath = "/" }) => {
           <IoIosArrowBack />
         </button>
         <div className="flex gap-2">
-          <h1 className="text-xl">Agent Name</h1>
+          <h1 className="text-xl">{name}</h1>
           <button onClick={handleEditClick} className="text-sm">
             <FaEdit size={16} />
           </button>

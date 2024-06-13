@@ -33,18 +33,18 @@ interface IPrompt {
 }
 
 export interface IAgentResponse {
-  _id: string;
+  _id?: string;
   name: string;
-  isPrivate: boolean;
-  profileId: string;
-  languageModelVersion: ILanguageModelVersion;
-  contributors: string[];
-  description: string;
-  knowledgeBase: string[];
-  knowledgeVector: string[];
-  plugins: string[];
-  prompt: IPrompt;
-  triggers: ITriggerResponse[];
-  createdAt: Date;
-  updatedAt: Date;
+  isPrivate?: boolean;
+  profileId?: string;
+  languageModelVersion?: ILanguageModelVersion;
+  contributors?: string[];
+  description?: string;
+  knowledgeBase?: string[];
+  knowledgeVector?: string[];
+  plugins?: string[];
+  prompt?: IPrompt;
+  triggers?: ITriggerResponse[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
