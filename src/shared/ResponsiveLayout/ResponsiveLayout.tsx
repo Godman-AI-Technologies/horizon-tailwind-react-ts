@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Divider } from "./components/Divider";
+import { IWidth, IWidthSetters } from "./types/interfaces";
 
 interface ISide {
   title: string;
@@ -26,91 +28,24 @@ export const ResponsiveLayout: React.FC<LayoutProps> = ({
   const [tabletLeftWidth, setTabletLeftWidth] = useState(1 / 2);
   const [tabletRightWidth, setTabletRightWidth] = useState(1 / 2);
 
-  const handleMouseDown = (
-    e: React.MouseEvent,
-    column: "leftDivider" | "rightDivider" | "tabletDivider"
-  ) => {
-    e.preventDefault();
-    const startX = e.clientX;
-    const startWidths = {
-      left: leftWidth,
-      center: centerWidth,
-      right: rightWidth,
-      tabletLeft: tabletLeftWidth,
-      tabletRight: tabletRightWidth,
-    };
+  const startWidth: IWidth = {
+    left: leftWidth,
+    center: centerWidth,
+    right: rightWidth,
+    tabletLeft: tabletLeftWidth,
+    tabletRight: tabletRightWidth,
+  };
 
-    const handleMouseMove = (e: MouseEvent) => {
-      const deltaX = e.clientX - startX;
-      const deltaWidth = deltaX / window.innerWidth;
-
-      const maxDelta = 0.1; // Максимальное изменение ширины - 10%
-
-      if (column === "leftDivider") {
-        const newLeftWidth = Math.max(
-          0.1,
-          Math.min(0.9, startWidths.left + deltaWidth)
-        );
-        const newCenterWidth = Math.max(
-          0.1,
-          Math.min(0.9, startWidths.center - deltaWidth)
-        );
-
-        if (
-          Math.abs(newLeftWidth - startWidths.left) <= maxDelta &&
-          Math.abs(newCenterWidth - startWidths.center) <= maxDelta
-        ) {
-          setLeftWidth(newLeftWidth);
-          setCenterWidth(newCenterWidth);
-        }
-      } else if (column === "rightDivider") {
-        const newCenterWidth = Math.max(
-          0.1,
-          Math.min(0.9, startWidths.center + deltaWidth)
-        );
-        const newRightWidth = Math.max(
-          0.1,
-          Math.min(0.9, startWidths.right - deltaWidth)
-        );
-
-        if (
-          Math.abs(newCenterWidth - startWidths.center) <= maxDelta &&
-          Math.abs(newRightWidth - startWidths.right) <= maxDelta
-        ) {
-          setCenterWidth(newCenterWidth);
-          setRightWidth(newRightWidth);
-        }
-      } else if (column === "tabletDivider") {
-        const newTabletLeftWidth = Math.max(
-          0.1,
-          Math.min(0.9, startWidths.tabletLeft + deltaWidth)
-        );
-        const newTabletRightWidth = Math.max(
-          0.1,
-          Math.min(0.9, startWidths.tabletRight - deltaWidth)
-        );
-
-        if (
-          Math.abs(newTabletLeftWidth - startWidths.tabletLeft) <= maxDelta &&
-          Math.abs(newTabletRightWidth - startWidths.tabletRight) <= maxDelta
-        ) {
-          setTabletLeftWidth(newTabletLeftWidth);
-          setTabletRightWidth(newTabletRightWidth);
-        }
-      }
-    };
-
-    const handleMouseUp = () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
+  const widthSetters: IWidthSetters = {
+    setLeftWidth,
+    setCenterWidth,
+    setRightWidth,
+    setTabletLeftWidth,
+    setTabletRightWidth,
   };
 
   return (
-    <div className="mt-3 flex h-full w-full flex-col md:flex-row">
+    <div className="flex h-full w-full flex-col md:flex-row">
       {/* Mobile layout */}
       <div className="mb-4 flex w-full justify-center md:hidden">
         <div className="flex w-full overflow-hidden rounded-full bg-gray-200">
@@ -184,10 +119,10 @@ export const ResponsiveLayout: React.FC<LayoutProps> = ({
               : rightSide.component}
           </div>
         </div>
-        <div
-          className="cursor-col-resize"
-          onMouseDown={(e) => handleMouseDown(e, "tabletDivider")}
-          style={{ width: "5px", backgroundColor: "gray", height: "100%" }}
+        <Divider
+          column="tabletDivider"
+          startWidths={startWidth}
+          widthSetters={widthSetters}
         />
         <div style={{ width: `${tabletRightWidth * 100}%` }}>
           {centerSide.component}
@@ -197,18 +132,18 @@ export const ResponsiveLayout: React.FC<LayoutProps> = ({
       {/* Desktop layout */}
       <div className="hidden h-full w-full lg:flex">
         <div style={{ width: `${leftWidth * 100}%` }}>{leftSide.component}</div>
-        <div
-          className="cursor-col-resize"
-          onMouseDown={(e) => handleMouseDown(e, "leftDivider")}
-          style={{ width: "5px", backgroundColor: "gray", height: "100%" }}
+        <Divider
+          column="leftDivider"
+          startWidths={startWidth}
+          widthSetters={widthSetters}
         />
         <div style={{ width: `${centerWidth * 100}%` }}>
           {centerSide.component}
         </div>
-        <div
-          className="cursor-col-resize"
-          onMouseDown={(e) => handleMouseDown(e, "rightDivider")}
-          style={{ width: "5px", backgroundColor: "gray", height: "100%" }}
+        <Divider
+          column="rightDivider"
+          startWidths={startWidth}
+          widthSetters={widthSetters}
         />
         <div style={{ width: `${rightWidth * 100}%` }}>
           {rightSide.component}
