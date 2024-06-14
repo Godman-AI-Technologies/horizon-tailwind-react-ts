@@ -9,6 +9,7 @@ interface ILayoutProps {
   backwardPath?: string;
   children: ReactNode;
   modalContent?: ReactNode;
+  modalSubmitHandler?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
   submitHandler?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
@@ -18,6 +19,7 @@ export const LayoutWrapper: React.FC<ILayoutProps> = ({
   backwardPath,
   modalContent,
   children,
+  modalSubmitHandler,
   submitHandler,
 }) => {
   document.documentElement.dir = "agents";
@@ -62,11 +64,17 @@ export const LayoutWrapper: React.FC<ILayoutProps> = ({
           <div className="flex items-center space-x-4">
             <span>Last update: 10:30</span>
             {isUpdate ? (
-              <button className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+              <button
+                onClick={submitHandler}
+                className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+              >
                 Update
               </button>
             ) : (
-              <button className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+              <button
+                onClick={submitHandler}
+                className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+              >
                 Create
               </button>
             )}
@@ -82,7 +90,7 @@ export const LayoutWrapper: React.FC<ILayoutProps> = ({
             {modalContent}
             <button
               onClick={() => {
-                submitHandler();
+                modalSubmitHandler();
                 handleCloseModal();
               }}
               className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"

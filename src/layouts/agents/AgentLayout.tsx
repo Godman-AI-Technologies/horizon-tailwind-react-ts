@@ -40,6 +40,25 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
     });
   }, [id, type]);
 
+  const updateSubmitHandler = async () => {
+    console.log("UPdate");
+    try {
+      const token = Cookies.get("accessToken");
+      const url = process.env.REACT_APP_USER_API + `/agents/${id}`;
+      const agent = await fetchData<IAgentResponse>(url, "PUT", token, {
+        name,
+        description,
+      });
+      setAgent(agent);
+      setName(agent.name);
+      setTemporaryName(agent.name);
+      setDescription(agent.description);
+      setTemporaryDescription(agent.description);
+    } catch (error) {
+      console.error("Error on fetching agent:", error);
+    }
+  };
+
   return (
     <>
       {agent ? (
@@ -47,10 +66,11 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
           name={name}
           isUpdate={type === "update"}
           backwardPath="/admin/dashboard/agents"
-          submitHandler={() => {
+          modalSubmitHandler={() => {
             setName(temporaryName);
             setDescription(temporaryDescription);
           }}
+          submitHandler={type === "update" ? updateSubmitHandler : () => {}}
           modalContent={
             <div className="flex flex-col">
               <label className="mb-2 text-lg font-medium text-gray-700">
