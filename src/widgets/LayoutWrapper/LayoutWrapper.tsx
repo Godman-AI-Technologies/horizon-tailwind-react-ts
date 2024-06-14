@@ -9,6 +9,7 @@ interface ILayoutProps {
   backwardPath?: string;
   children: ReactNode;
   modalContent?: ReactNode;
+  submitHandler?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const LayoutWrapper: React.FC<ILayoutProps> = ({
@@ -17,6 +18,7 @@ export const LayoutWrapper: React.FC<ILayoutProps> = ({
   backwardPath,
   modalContent,
   children,
+  submitHandler,
 }) => {
   document.documentElement.dir = "agents";
   const navigate = useNavigate();
@@ -78,6 +80,15 @@ export const LayoutWrapper: React.FC<ILayoutProps> = ({
           <div className="rounded bg-white p-4">
             <h2 className="mb-4 text-xl">Редактирование</h2>
             {modalContent}
+            <button
+              onClick={() => {
+                submitHandler();
+                handleCloseModal();
+              }}
+              className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
+            >
+              Confirm
+            </button>
             <button onClick={handleCloseModal} className="text-red-500">
               Закрыть
             </button>

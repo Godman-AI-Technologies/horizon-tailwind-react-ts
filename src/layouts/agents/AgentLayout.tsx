@@ -5,7 +5,6 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ResponsiveLayout } from "shared/ResponsiveLayout";
-import { SwitchLayout } from "shared/SwitchLayout";
 import { LayoutWrapper } from "widgets/LayoutWrapper";
 import { PromptSettings } from "./components/PromptSettings";
 
@@ -18,6 +17,10 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
   const { id } = useParams();
 
   const [agent, setAgent] = useState<IAgentResponse>(null);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [temporaryName, setTemporaryName] = useState("");
+  const [temporaryDescription, setTemporaryDescription] = useState("");
 
   useEffect(() => {
     if (type === "create") return;
@@ -26,8 +29,11 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
         const token = Cookies.get("accessToken");
         const url = process.env.REACT_APP_USER_API + `/agents/${id}`;
         const agent = await fetchData<IAgentResponse>(url, "GET", token);
-        console.log(agent);
         setAgent(agent);
+        setName(agent.name);
+        setTemporaryName(agent.name);
+        setDescription(agent.description);
+        setTemporaryDescription(agent.description);
       } catch (error) {
         console.error("Error on fetching agent:", error);
       }
@@ -38,10 +44,39 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
     <>
       {agent ? (
         <LayoutWrapper
-          name={agent.name}
+          name={name}
           isUpdate={type === "update"}
           backwardPath="/admin/dashboard/agents"
-          modalContent={<div>modal</div>}
+          submitHandler={() => {
+            setName(temporaryName);
+            setDescription(temporaryDescription);
+          }}
+          modalContent={
+            <div className="flex flex-col">
+              <label className="mb-2 text-lg font-medium text-gray-700">
+                Name
+              </label>
+              <input
+                type="text"
+                onChange={(e) => {
+                  setTemporaryName(e.target.value);
+                }}
+                value={temporaryName}
+                className="rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <label className="mb-2 text-lg font-medium text-gray-700">
+                Description
+              </label>
+              <input
+                type="text"
+                onChange={(e) => {
+                  setTemporaryDescription(e.target.value);
+                }}
+                value={temporaryDescription}
+                className="rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          }
         >
           <ResponsiveLayout
             leftSide={{
