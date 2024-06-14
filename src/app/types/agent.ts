@@ -23,7 +23,7 @@ interface IPromptField {
   data: string;
 }
 
-interface IPrompt {
+export interface IPrompt {
   system: {
     type: string;
     promptFields: IPromptField[];

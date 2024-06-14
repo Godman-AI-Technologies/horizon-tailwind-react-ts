@@ -13,7 +13,7 @@ export const SwitchLayout: React.FC<LayoutProps> = ({ sides }) => {
   const [selectedColumn, setSelectedColumn] = useState<number>(0);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex h-full flex-col">
       <div className="flex w-full justify-center">
         <div className="flex w-full overflow-hidden bg-gray-200">
           {sides.map((side, index) => (
@@ -34,7 +34,9 @@ export const SwitchLayout: React.FC<LayoutProps> = ({ sides }) => {
       {sides.map((side, index) => (
         <div
           key={index}
-          className={`flex-1 ${selectedColumn === index ? "block" : "hidden"}`}
+          className={`h-full flex-1 ${
+            selectedColumn === index ? "block" : "hidden"
+          }`}
         >
           {side.component}
         </div>
