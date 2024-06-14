@@ -1,5 +1,6 @@
-import { IAgentResponse, IPromptField, IPromptProp } from "app/types";
+import { IAgentResponse, IPromptField } from "app/types";
 import { fetchData } from "app/utils/fetch/request";
+import { generateUniqueText } from "app/utils/random/agent";
 import FullScreenLoader from "entities/FullScreenLoader/FullScreenLoader";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
@@ -23,7 +24,7 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
   const [temporaryName, setTemporaryName] = useState("");
   const [temporaryDescription, setTemporaryDescription] = useState("");
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState(generateUniqueText());
   const [description, setDescription] = useState("");
   const [promptType, setPromptType] = useState("basic");
   const [advancedPrompt, setAdvancedPrompt] = useState<IPromptField>();
