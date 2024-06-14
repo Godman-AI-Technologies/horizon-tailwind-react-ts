@@ -24,7 +24,11 @@ export const KnowledgeLayout: React.FC<IKnowledgeLayoutProps> = ({ type }) => {
   }, [id, type]);
 
   return (
-    <LayoutWrapper name="Unknown" backwardPath="/admin/dashboard/knowledge">
+    <LayoutWrapper
+      name="Unknown"
+      isUpdate={type === "update"}
+      backwardPath="/admin/dashboard/knowledge"
+    >
       <ResponsiveLayout
         leftSide={{
           title: "Left",

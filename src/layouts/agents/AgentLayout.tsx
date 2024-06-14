@@ -33,7 +33,11 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
   }, [id, type]);
 
   return (
-    <LayoutWrapper name={agent.name} backwardPath="/admin/dashboard/agents">
+    <LayoutWrapper
+      name={agent.name}
+      isUpdate={type === "update"}
+      backwardPath="/admin/dashboard/agents"
+    >
       <ResponsiveLayout
         leftSide={{
           title: "Left",

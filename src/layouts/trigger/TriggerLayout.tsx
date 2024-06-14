@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ResponsiveLayout } from "shared/ResponsiveLayout";
-import { SwitchLayout } from "shared/SwitchLayout";
 import { LayoutWrapper } from "widgets/LayoutWrapper";
 
 interface ITriggerLayoutProps {
@@ -24,7 +23,11 @@ export const TriggerLayout: React.FC<ITriggerLayoutProps> = ({ type }) => {
   }, [id, type]);
 
   return (
-    <LayoutWrapper name="Unknown" backwardPath="/admin/dashboard/triggers">
+    <LayoutWrapper
+      name="Unknown"
+      isUpdate={type === "update"}
+      backwardPath="/admin/dashboard/triggers"
+    >
       <ResponsiveLayout
         leftSide={{
           title: "Left",
