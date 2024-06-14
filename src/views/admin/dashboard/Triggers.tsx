@@ -1,3 +1,4 @@
+import { fetchData } from "app/utils/fetch/request";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
@@ -5,35 +6,21 @@ import { FaTrash } from "react-icons/fa";
 export const Triggers = () => {
   const [triggers, setTriggers] = useState(null);
   useEffect(() => {
-    const fetchTriggers = async () => {
+    setTimeout(async () => {
       const token = Cookies.get("accessToken");
       const profileId = Cookies.get("profileId");
 
       try {
-        const response = await fetch(
+        const triggers = await fetchData(
           `${process.env.REACT_APP_USER_API}/profiles/${profileId}/triggers`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          "GET",
+          token
         );
-
-        if (!response.ok) {
-          throw new Error("Failed to get triggers");
-        }
-
-        const data = await response.json();
-        console.log(data);
-        setTriggers(data);
+        setTriggers(triggers);
       } catch (error) {
         console.error("Error on getting triggers:", error);
       }
-    };
-
-    fetchTriggers();
+    });
   }, []);
 
   const handleDelete = (id: string) => {

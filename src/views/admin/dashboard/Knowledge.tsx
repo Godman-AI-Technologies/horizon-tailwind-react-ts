@@ -1,3 +1,4 @@
+import { fetchData } from "app/utils/fetch/request";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
@@ -6,35 +7,22 @@ export const Knowledge = () => {
   const [knowledge, setKnowledge] = useState(null);
 
   useEffect(() => {
-    const fetchKnowledge = async () => {
+    setTimeout(async () => {
       const token = Cookies.get("accessToken");
       const profileId = Cookies.get("profileId");
 
       try {
-        const response = await fetch(
+        const knowledge = await fetchData(
           `${process.env.REACT_APP_USER_API}/profiles/${profileId}/knowledge-vector`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          "GET",
+          token
         );
 
-        if (!response.ok) {
-          throw new Error("Failed to get knowledge");
-        }
-
-        const data = await response.json();
-        console.log(data);
-        setKnowledge(data);
+        setKnowledge(knowledge);
       } catch (error) {
         console.error("Error on getting knowledge:", error);
       }
-    };
-
-    fetchKnowledge();
+    });
   }, []);
 
   const handleDelete = (id: string) => {

@@ -1,3 +1,4 @@
+import { fetchData } from "app/utils/fetch/request";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
@@ -6,35 +7,21 @@ export const Agents = () => {
   const [agents, setAgents] = useState(null);
 
   useEffect(() => {
-    const fetchAgents = async () => {
+    setTimeout(async () => {
       const token = Cookies.get("accessToken");
       const profileId = Cookies.get("profileId");
 
       try {
-        const response = await fetch(
+        const agents = await fetchData(
           `${process.env.REACT_APP_USER_API}/profiles/${profileId}/agents`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          "GET",
+          token
         );
-
-        if (!response.ok) {
-          throw new Error("Failed to get agents");
-        }
-
-        const data = await response.json();
-        console.log(data);
-        setAgents(data);
+        setAgents(agents);
       } catch (error) {
         console.error("Error on getting agents:", error);
       }
-    };
-
-    fetchAgents();
+    });
   }, []);
 
   const handleDelete = (id: string) => {
