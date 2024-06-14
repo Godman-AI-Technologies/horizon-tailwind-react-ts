@@ -41,6 +41,7 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
           name={agent.name}
           isUpdate={type === "update"}
           backwardPath="/admin/dashboard/agents"
+          modalContent={<div>modal</div>}
         >
           <ResponsiveLayout
             leftSide={{
