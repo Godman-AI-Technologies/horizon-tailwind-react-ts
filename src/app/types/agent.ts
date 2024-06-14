@@ -10,16 +10,18 @@ interface ILanguageModelVersion {
   updatedAt: Date;
 }
 
-interface IPromptField {
-  promptProp: {
-    _id: string;
-    label: string;
-    prefix: string;
-    type: string;
-    depricated: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-  };
+export interface IPromptProp {
+  _id: string;
+  label: string;
+  prefix: string;
+  type: string;
+  depricated: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IPromptField {
+  promptProp: IPromptProp;
   data: string;
 }
 

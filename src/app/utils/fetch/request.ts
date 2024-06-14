@@ -1,16 +1,20 @@
 export async function fetchData<T>(
   url: string,
   method: string,
-  token: string,
+  token?: string,
   body: any = null
 ): Promise<T> {
   try {
+    const headers: any = {
+      "Content-Type": "application/json",
+    };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
     const options: RequestInit = {
       method: method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+      headers,
     };
 
     if (body) {

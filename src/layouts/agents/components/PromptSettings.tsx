@@ -1,34 +1,37 @@
-import { IPrompt } from "app/types";
+import { IPromptField } from "app/types";
 import { SwitchLayout } from "shared/SwitchLayout";
 
 interface IPromptSettings {
-  prompt?: IPrompt;
+  promptType: string;
+  promptFields: IPromptField[];
+  advacedPrompt: IPromptField;
 }
 
-const BasicPrompt: React.FC<IPromptSettings> = ({ prompt }) => {
-  const promptFields = prompt?.system?.promptFields;
+interface IBasicProps {
+  promptFields: IPromptField[];
+}
+
+const BasicPrompt: React.FC<IBasicProps> = ({ promptFields }) => {
   return (
     <div>
       {promptFields &&
-        promptFields
-          .filter((field) => field.promptProp.label !== "Advanced")
-          .map((field, index) => (
-            <div key={index} className="flex flex-col">
-              <label className="mb-2 text-lg font-medium text-gray-700">
-                {field.promptProp.label}
-              </label>
-              <input
-                type="text"
-                value={field.data}
-                className="rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          ))}
+        promptFields.map((field, index) => (
+          <div key={index} className="flex flex-col">
+            <label className="mb-2 text-lg font-medium text-gray-700">
+              {field.promptProp.label}
+            </label>
+            <input
+              type="text"
+              value={field.data}
+              className="rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        ))}
     </div>
   );
 };
 
-const AdvancedPrompt = () => {
+const AdvancedPrompt = ({ promptField }: { promptField: IPromptField }) => {
   return (
     <textarea
       className="
@@ -52,20 +55,32 @@ const AdvancedPrompt = () => {
       outline-none
     "
       placeholder="Type something..."
-    ></textarea>
+    >
+      {promptField?.data || ""}
+    </textarea>
   );
 };
 
-export const PromptSettings: React.FC<IPromptSettings> = ({ prompt }) => {
+export const PromptSettings: React.FC<IPromptSettings> = ({
+  promptType,
+  promptFields,
+  advacedPrompt,
+}) => {
   return (
     <>
       <header className="h-8 text-center text-xl font-bold">
-        Props Settings : {prompt?.system?.type || "Unknown type"}
+        Props Settings : {promptType || "Unknown type"}
       </header>
       <SwitchLayout
         sides={[
-          { title: "Baic", component: <BasicPrompt prompt={prompt} /> },
-          { title: "Advenced", component: <AdvancedPrompt /> },
+          {
+            title: "Baic",
+            component: <BasicPrompt promptFields={promptFields} />,
+          },
+          {
+            title: "Advenced",
+            component: <AdvancedPrompt promptField={advacedPrompt} />,
+          },
         ]}
       />
     </>

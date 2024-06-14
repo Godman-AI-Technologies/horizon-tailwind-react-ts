@@ -1,12 +1,13 @@
-import { IAgentResponse } from "app/types";
+import { IAgentResponse, IPromptField, IPromptProp } from "app/types";
 import { fetchData } from "app/utils/fetch/request";
 import FullScreenLoader from "entities/FullScreenLoader/FullScreenLoader";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ResponsiveLayout } from "shared/ResponsiveLayout";
 import { LayoutWrapper } from "widgets/LayoutWrapper";
 import { PromptSettings } from "./components/PromptSettings";
+import { getAdvancedPrompt, getBasicPromptUIFields } from "./utils/prompt";
 
 interface IAgentLayoutProps {
   type: "create" | "update";
@@ -14,13 +15,19 @@ interface IAgentLayoutProps {
 
 export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
   document.documentElement.dir = "agents";
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const [agent, setAgent] = useState<IAgentResponse>(null);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+
   const [temporaryName, setTemporaryName] = useState("");
   const [temporaryDescription, setTemporaryDescription] = useState("");
+
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [promptType, setPromptType] = useState("basic");
+  const [advancedPrompt, setAdvancedPrompt] = useState<IPromptField>();
+  const [promptFields, setPromptFields] = useState<IPromptField[]>([]);
 
   useEffect(() => {
     if (type === "create") return;
@@ -29,11 +36,19 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
         const token = Cookies.get("accessToken");
         const url = process.env.REACT_APP_USER_API + `/agents/${id}`;
         const agent = await fetchData<IAgentResponse>(url, "GET", token);
+        console.log(agent);
         setAgent(agent);
         setName(agent.name);
         setTemporaryName(agent.name);
         setDescription(agent.description);
         setTemporaryDescription(agent.description);
+        setPromptType(agent?.prompt?.system?.type);
+        setPromptFields(
+          getBasicPromptUIFields(agent?.prompt?.system?.promptFields)
+        );
+        setAdvancedPrompt(
+          getAdvancedPrompt(agent?.prompt?.system?.promptFields)
+        );
       } catch (error) {
         console.error("Error on fetching agent:", error);
       }
@@ -41,7 +56,6 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
   }, [id, type]);
 
   const updateSubmitHandler = async () => {
-    console.log("UPdate");
     try {
       const token = Cookies.get("accessToken");
       const url = process.env.REACT_APP_USER_API + `/agents/${id}`;
@@ -59,9 +73,49 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
     }
   };
 
+  const createSubmitHandler = async () => {
+    try {
+      const token = Cookies.get("accessToken");
+      const profileId = Cookies.get("profileId");
+      const url = process.env.REACT_APP_USER_API + `/agents/${profileId}`;
+      const agent = await fetchData<IAgentResponse>(url, "POST", token, {
+        name,
+        description,
+        languageModelVersion: "661ce97572c213f85ecd6fc1",
+        prompt: {
+          system: {
+            type: "basic",
+            promptFields: [
+              {
+                promptProp: "66322bc1d58f34fe05c63b65",
+                data: "assistant of chocolate factory",
+              },
+            ],
+          },
+          temperature: 0.6,
+        },
+        contributors: [],
+      });
+      console.log("await", agent);
+      navigate(agent._id);
+    } catch (error) {
+      console.error("Error on fetching agent:", error);
+    }
+  };
+
+  const getPromptProperties = async () => {
+    try {
+      const url = process.env.REACT_APP_USER_API + `/agents/prompt-properties`;
+      const properties = await fetchData<IAgentResponse>(url, "GET");
+      console.log("PROPS", properties);
+    } catch (error) {
+      console.error("Error on fetching agent:", error);
+    }
+  };
+
   return (
     <>
-      {agent ? (
+      {agent || type === "create" ? (
         <LayoutWrapper
           name={name}
           isUpdate={type === "update"}
@@ -70,7 +124,9 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
             setName(temporaryName);
             setDescription(temporaryDescription);
           }}
-          submitHandler={type === "update" ? updateSubmitHandler : () => {}}
+          submitHandler={
+            type === "update" ? updateSubmitHandler : createSubmitHandler
+          }
           modalContent={
             <div className="flex flex-col">
               <label className="mb-2 text-lg font-medium text-gray-700">
@@ -101,7 +157,13 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
           <ResponsiveLayout
             leftSide={{
               title: "Left",
-              component: <PromptSettings prompt={agent.prompt} />,
+              component: (
+                <PromptSettings
+                  promptType={promptType}
+                  promptFields={promptFields}
+                  advacedPrompt={advancedPrompt}
+                />
+              ),
             }}
             centerSide={{ title: "center", component: <div>center</div> }}
             rightSide={{

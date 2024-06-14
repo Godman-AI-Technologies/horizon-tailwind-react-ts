@@ -1,5 +1,6 @@
 import { IAgentResponse } from "app/types";
 import { fetchData } from "app/utils/fetch/request";
+import { AddButton } from "entities/AddButton";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { FaEllipsisV } from "react-icons/fa";
@@ -38,6 +39,12 @@ export const Agents = () => {
 
   return (
     <div className="container mx-auto">
+      <AddButton
+        onClick={() => {
+          navigate("/agents");
+        }}
+      />
+
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {agents &&
           agents.map((agent: IAgentResponse) => (
