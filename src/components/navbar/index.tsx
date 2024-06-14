@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Dropdown from "components/dropdown";
+import ChangePasswordPopup from "./change-password";
 import PopoverHorizon from "components/popover";
 import { FiAlignJustify } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -161,10 +162,10 @@ const Navbar = (props: {
               <div className="mt-3 h-px w-full bg-gray-200 dark:bg-white/20 " />
               <div className="ml-4 mt-3 flex flex-col">
                 <PopoverHorizon
+                  content={<ChangePasswordPopup></ChangePasswordPopup>}
                   trigger={
-                    <div className="hover:cursor-pointer">Change password</div>
+                    <div className="hover:cursor-pointer">Change Password</div>
                   }
-                  content={<div>hello</div>}
                 ></PopoverHorizon>{" "}
               </div>
 
