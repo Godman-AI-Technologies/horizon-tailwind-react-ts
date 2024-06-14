@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Dropdown from "components/dropdown";
+import ChangePasswordPopup from "./change-password";
+import PopoverHorizon from "components/popover";
 import { FiAlignJustify } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
@@ -149,7 +151,7 @@ const Navbar = (props: {
             <img className="h-10 w-10 rounded-full" src={picture} alt="" />
           }
           children={
-            <div className="flex h-28 w-56 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
+            <div className="flex w-56 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
               <div className="ml-4 mt-3">
                 <div className="flex items-center gap-2">
                   <p className="text-sm font-bold text-navy-700 dark:text-white">
@@ -158,11 +160,20 @@ const Navbar = (props: {
                 </div>
               </div>
               <div className="mt-3 h-px w-full bg-gray-200 dark:bg-white/20 " />
-
               <div className="ml-4 mt-3 flex flex-col">
+                <PopoverHorizon
+                  content={<ChangePasswordPopup></ChangePasswordPopup>}
+                  trigger={
+                    <div className="hover:cursor-pointer">Change Password</div>
+                  }
+                ></PopoverHorizon>{" "}
+              </div>
+
+              <div className="mt-3 h-px w-full bg-gray-200 dark:bg-white/20 " />
+              <div className="my-3 ml-4 flex flex-col">
                 <a
                   href=" "
-                  className="mt-3 text-sm font-medium text-red-500 hover:text-red-500"
+                  className="text-sm font-medium text-red-500 hover:text-red-500"
                   onClick={(e) => {
                     e.preventDefault();
                     Cookies.remove("accessToken");

@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import { MdDeleteOutline } from "react-icons/md";
 import React, { useState, useEffect, useRef } from "react";
 
 interface ILLMMessage {
@@ -64,6 +65,11 @@ const Chat: React.FC<ChatProps> = ({
   // Function to send a new message to the API
   const sendMessage = async (event: any) => {
     event.preventDefault();
+
+    // Check if the newMessage is empty
+    if (!newMessage.trim()) {
+      return;
+    }
 
     const requestMessage = newMessage;
 
@@ -131,7 +137,7 @@ const Chat: React.FC<ChatProps> = ({
             className={
               "max-w-[40ch] rounded-xl px-3 py-2 outline outline-2 outline-brand-500 " +
               (message.role === "user"
-                ? "mb-2 self-end bg-white"
+                ? "mb-2 self-end bg-white dark:bg-navy-800"
                 : "mb-3 self-start bg-brand-400 text-gray-100")
             }
           >
@@ -156,33 +162,21 @@ const Chat: React.FC<ChatProps> = ({
         <button
           type="button"
           onClick={clearMessages}
-          className="m-1 mr-2 rounded-full bg-gray-200 p-2 text-gray-600 hover:bg-gray-300"
+          className="m-1 mr-2 rounded-full bg-brand-300/0 p-2 text-brand-300 transition-all hover:bg-brand-300/20"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+          <MdDeleteOutline className="h-6 w-6"></MdDeleteOutline>
         </button>
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          className="w-full rounded-full p-3 outline outline-2 outline-gray-500 focus:outline-brand-500"
+          className="w-full rounded-full p-3 outline outline-2 outline-gray-500 focus:outline-brand-500 dark:bg-navy-800"
           placeholder={inputPlaceholder}
         />
         <button
           type="submit"
-          className="absolute right-0 m-1 -ml-1.5 rounded-full bg-brand-500 p-2 text-white"
+          className="absolute right-0 m-1 -ml-1.5 rounded-full bg-brand-500 p-2 text-white transition-all hover:bg-brand-500/80 disabled:bg-gray-500 dark:disabled:bg-gray-700"
+          disabled={!newMessage.trim()}
         >
           {buttonText}
         </button>
