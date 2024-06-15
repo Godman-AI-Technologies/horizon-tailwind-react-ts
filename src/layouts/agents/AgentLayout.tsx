@@ -21,11 +21,14 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
 
   const [agent, setAgent] = useState<IAgentResponse>(null);
 
-  const [temporaryName, setTemporaryName] = useState("");
+  const uniqueText = generateUniqueText();
+
+  const [name, setName] = useState(uniqueText);
+  const [description, setDescription] = useState("");
+
+  const [temporaryName, setTemporaryName] = useState(name);
   const [temporaryDescription, setTemporaryDescription] = useState("");
 
-  const [name, setName] = useState(generateUniqueText());
-  const [description, setDescription] = useState("");
   const [promptType, setPromptType] = useState("basic");
   const [advancedPrompt, setAdvancedPrompt] = useState<IPromptField>();
   const [promptFields, setPromptFields] = useState<IPromptField[]>([]);
@@ -124,6 +127,9 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
           modalSubmitHandler={() => {
             setName(temporaryName);
             setDescription(temporaryDescription);
+          }}
+          modalCloseHandler={() => {
+            setTemporaryName(name);
           }}
           submitHandler={
             type === "update" ? updateSubmitHandler : createSubmitHandler

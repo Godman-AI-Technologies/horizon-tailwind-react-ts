@@ -10,6 +10,7 @@ interface ILayoutProps {
   children: ReactNode;
   modalContent?: ReactNode;
   modalSubmitHandler?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+  modalCloseHandler?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
   submitHandler?: (event?: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
@@ -20,6 +21,7 @@ export const LayoutWrapper: React.FC<ILayoutProps> = ({
   modalContent,
   children,
   modalSubmitHandler,
+  modalCloseHandler,
   submitHandler,
 }) => {
   document.documentElement.dir = "agents";
@@ -35,6 +37,7 @@ export const LayoutWrapper: React.FC<ILayoutProps> = ({
   };
 
   const handleCloseModal = () => {
+    modalCloseHandler();
     setIsModalOpen(false);
   };
 
@@ -91,7 +94,7 @@ export const LayoutWrapper: React.FC<ILayoutProps> = ({
             <button
               onClick={() => {
                 modalSubmitHandler();
-                handleCloseModal();
+                setIsModalOpen(false);
               }}
               className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
             >
