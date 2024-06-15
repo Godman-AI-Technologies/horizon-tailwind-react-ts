@@ -7,7 +7,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
 import {} from "react-icons/io";
-import avatar from "assets/img/avatars/avatar4.png";
 import Cookies from "js-cookie";
 import HorizontalLink from "shared/HorizontalLink/HorizontalLink";
 
