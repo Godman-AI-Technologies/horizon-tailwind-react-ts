@@ -1,4 +1,9 @@
-import { IAgentResponse, IPromptField } from "app/types";
+import {
+  IAgentRequest,
+  IAgentResponse,
+  IPrompt,
+  IPromptField,
+} from "app/types";
 import { fetchData } from "app/utils/fetch/request";
 import { generateUniqueText } from "app/utils/random/agent";
 import FullScreenLoader from "entities/FullScreenLoader/FullScreenLoader";
@@ -29,9 +34,7 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
   const [temporaryName, setTemporaryName] = useState(name);
   const [temporaryDescription, setTemporaryDescription] = useState("");
 
-  const [promptType, setPromptType] = useState("basic");
-  const [advancedPrompt, setAdvancedPrompt] = useState<IPromptField>();
-  const [promptFields, setPromptFields] = useState<IPromptField[]>([]);
+  const [prompt, setPrompt] = useState<IPrompt>();
 
   useEffect(() => {
     if (type === "create") return;
@@ -46,13 +49,7 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
         setTemporaryName(agent.name);
         setDescription(agent.description);
         setTemporaryDescription(agent.description);
-        setPromptType(agent?.prompt?.system?.type);
-        setPromptFields(
-          getBasicPromptUIFields(agent?.prompt?.system?.promptFields)
-        );
-        setAdvancedPrompt(
-          getAdvancedPrompt(agent?.prompt?.system?.promptFields)
-        );
+        setPrompt(agent?.prompt);
       } catch (error) {
         console.error("Error on fetching agent:", error);
       }
@@ -82,7 +79,7 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
       const token = Cookies.get("accessToken");
       const profileId = Cookies.get("profileId");
       const url = process.env.REACT_APP_USER_API + `/agents/${profileId}`;
-      const agent = await fetchData<IAgentResponse>(url, "POST", token, {
+      const agent = await fetchData<IAgentRequest>(url, "POST", token, {
         name,
         description,
         languageModelVersion: "661ce97572c213f85ecd6fc1",
@@ -102,16 +99,6 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
       });
       console.log("await", agent);
       navigate(agent._id);
-    } catch (error) {
-      console.error("Error on fetching agent:", error);
-    }
-  };
-
-  const getPromptProperties = async () => {
-    try {
-      const url = process.env.REACT_APP_USER_API + `/agents/prompt-properties`;
-      const properties = await fetchData<IAgentResponse>(url, "GET");
-      console.log("PROPS", properties);
     } catch (error) {
       console.error("Error on fetching agent:", error);
     }
@@ -164,13 +151,7 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
           <ResponsiveLayout
             leftSide={{
               title: "Left",
-              component: (
-                <PromptSettings
-                  promptType={promptType}
-                  promptFields={promptFields}
-                  advacedPrompt={advancedPrompt}
-                />
-              ),
+              component: <PromptSettings prompt={prompt} />,
             }}
             centerSide={{ title: "center", component: <div>center</div> }}
             rightSide={{
