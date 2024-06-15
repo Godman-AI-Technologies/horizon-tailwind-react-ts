@@ -42,14 +42,11 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
       temperature: 2,
     },
   });
-  const [isChanged, setIsChanged] = useState(false);
+  // const [isChanged, setIsChanged] = useState(false);
 
   const uniqueText = generateUniqueText();
 
-  const [name, setName] = useState(uniqueText);
-  const [description, setDescription] = useState("");
-
-  const [temporaryName, setTemporaryName] = useState(name);
+  const [temporaryName, setTemporaryName] = useState(uniqueText);
   const [temporaryDescription, setTemporaryDescription] = useState("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -117,9 +114,7 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
             },
           },
         });
-        setName(agent.name);
         setTemporaryName(agent.name);
-        setDescription(agent.description);
         setTemporaryDescription(agent.description);
       } catch (error) {
         console.error("Error on fetching agent:", error);
@@ -137,9 +132,7 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
         token,
         agent
       );
-      setName(updatedAgent.name);
       setTemporaryName(updatedAgent.name);
-      setDescription(updatedAgent.description);
       setTemporaryDescription(updatedAgent.description);
     } catch (error) {
       console.error("Error on fetching agent:", error);
@@ -151,9 +144,9 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
       const token = Cookies.get("accessToken");
       const profileId = Cookies.get("profileId");
       const url = process.env.REACT_APP_USER_API + `/agents/${profileId}`;
-      const agent = await fetchData<IAgentRequest>(url, "POST", token, {
-        name,
-        description,
+      const createdAgent = await fetchData<IAgentRequest>(url, "POST", token, {
+        name: agent.name,
+        description: agent.description,
         languageModelVersion: "661ce97572c213f85ecd6fc1",
         prompt: {
           system: {
@@ -169,7 +162,7 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
         },
         contributors: [],
       });
-      navigate(agent._id);
+      navigate(createdAgent._id);
     } catch (error) {
       console.error("Error on fetching agent:", error);
     }
@@ -179,15 +172,18 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
     <>
       {agent || type === "create" ? (
         <LayoutWrapper
-          name={name}
+          name={agent.name}
           isUpdate={type === "update"}
           backwardPath="/admin/dashboard/agents"
           modalSubmitHandler={() => {
-            setName(temporaryName);
-            setDescription(temporaryDescription);
+            setAgent({
+              ...agent,
+              name: temporaryName,
+              description: temporaryDescription,
+            });
           }}
           modalCloseHandler={() => {
-            setTemporaryName(name);
+            setTemporaryName(agent.name);
           }}
           submitHandler={
             type === "update" ? updateSubmitHandler : createSubmitHandler
