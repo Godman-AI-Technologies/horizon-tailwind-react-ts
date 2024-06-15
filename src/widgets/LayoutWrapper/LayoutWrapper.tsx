@@ -27,6 +27,8 @@ export const LayoutWrapper: React.FC<ILayoutProps> = ({
   document.documentElement.dir = "agents";
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [updateTime, setUpdateTime] = useState(null);
+  console.log("TIME", updateTime);
 
   const handleBackClick = () => {
     navigate(backwardPath);
@@ -65,10 +67,13 @@ export const LayoutWrapper: React.FC<ILayoutProps> = ({
 
           {/* Правый компонент */}
           <div className="flex items-center space-x-4">
-            <span>Last update: 10:30</span>
+            {isUpdate && <span>{updateTime ? updateTime : "not updated"}</span>}
             {isUpdate ? (
               <button
-                onClick={submitHandler}
+                onClick={() => {
+                  submitHandler();
+                  setUpdateTime(new Date().toLocaleString());
+                }}
                 className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
               >
                 Update
