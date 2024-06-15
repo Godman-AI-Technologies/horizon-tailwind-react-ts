@@ -52,13 +52,10 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
   const [temporaryName, setTemporaryName] = useState(name);
   const [temporaryDescription, setTemporaryDescription] = useState("");
 
-  const [prompt, setPrompt] = useState<IPrompt>();
-
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const [mainKey, subKey] = name.split(".");
 
-    console.log(mainKey, subKey);
     setAgent((prevAgentData) => {
       let newAgentData;
       if (mainKey === "prompt") {
@@ -108,12 +105,22 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
           name: agent.name,
           description: agent.description,
           languageModelVersion: "661ce97572c213f85ecd6fc1",
+          prompt: {
+            ...agent?.prompt,
+            system: {
+              ...agent?.prompt?.system,
+              promptFields:
+                agent.prompt?.system?.promptFields.map((field) => ({
+                  promptProp: field.promptProp._id,
+                  data: field?.data,
+                })) || [],
+            },
+          },
         });
         setName(agent.name);
         setTemporaryName(agent.name);
         setDescription(agent.description);
         setTemporaryDescription(agent.description);
-        setPrompt(agent?.prompt);
       } catch (error) {
         console.error("Error on fetching agent:", error);
       }
@@ -124,14 +131,16 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
     try {
       const token = Cookies.get("accessToken");
       const url = process.env.REACT_APP_USER_API + `/agents/${id}`;
-      const agent = await fetchData<IAgentResponse>(url, "PUT", token, {
-        name,
-        description,
-      });
-      setName(agent.name);
-      setTemporaryName(agent.name);
-      setDescription(agent.description);
-      setTemporaryDescription(agent.description);
+      const updatedAgent = await fetchData<IAgentResponse>(
+        url,
+        "PUT",
+        token,
+        agent
+      );
+      setName(updatedAgent.name);
+      setTemporaryName(updatedAgent.name);
+      setDescription(updatedAgent.description);
+      setTemporaryDescription(updatedAgent.description);
     } catch (error) {
       console.error("Error on fetching agent:", error);
     }
@@ -160,7 +169,6 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
         },
         contributors: [],
       });
-      console.log("await", agent);
       navigate(agent._id);
     } catch (error) {
       console.error("Error on fetching agent:", error);
@@ -215,7 +223,7 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
             leftSide={{
               title: "Left",
               component: (
-                <PromptSettings prompt={prompt} handleChange={handleChange} />
+                <PromptSettings agent={agent} handleChange={handleChange} />
               ),
             }}
             centerSide={{ title: "center", component: <div>center</div> }}
