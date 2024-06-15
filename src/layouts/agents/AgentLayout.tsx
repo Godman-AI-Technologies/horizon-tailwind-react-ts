@@ -11,6 +11,7 @@ import Cookies from "js-cookie";
 import { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Modal } from "shared/Modal";
 import { ResponsiveLayout } from "shared/ResponsiveLayout";
 import { LayoutWrapper } from "widgets/LayoutWrapper";
 import { PromptSettings } from "./components/PromptSettings";
