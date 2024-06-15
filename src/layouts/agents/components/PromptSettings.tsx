@@ -1,18 +1,27 @@
-import { IAgentResponse, IPrompt, IPromptField, IPromptProp } from "app/types";
+import { IAgentRequest, IPrompt, IPromptField, IPromptProp } from "app/types";
 import { fetchData } from "app/utils/fetch/request";
+import { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 import { SwitchLayout } from "shared/SwitchLayout";
 
+type THandleChange = (e: ChangeEvent<HTMLInputElement>) => void;
+
 interface IPromptSettings {
   prompt: IPrompt;
+  handleChange: THandleChange;
 }
 
 interface IBasicProps {
   promptFields: IPromptField[];
   promptProps: IPromptProp[];
+  handleChange: THandleChange;
 }
 
-const BasicPrompt: React.FC<IBasicProps> = ({ promptProps, promptFields }) => {
+const BasicPrompt: React.FC<IBasicProps> = ({
+  promptProps,
+  promptFields,
+  handleChange,
+}) => {
   const basicPromptInputs = promptProps
     .filter((prop) => prop.type === "basic")
     .map((prop) => {
@@ -21,6 +30,7 @@ const BasicPrompt: React.FC<IBasicProps> = ({ promptProps, promptFields }) => {
       );
       return { promptProp: prop, data: matchedField?.data };
     });
+
   return (
     <div>
       {basicPromptInputs &&
@@ -31,6 +41,8 @@ const BasicPrompt: React.FC<IBasicProps> = ({ promptProps, promptFields }) => {
             </label>
             <input
               type="text"
+              name={`prompt.${field.promptProp._id}`}
+              onChange={handleChange}
               value={field?.data}
               className="rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -55,7 +67,10 @@ const AdvancedPrompt: React.FC<IAdvancedProps> = ({ advancedFiels }) => {
   );
 };
 
-export const PromptSettings: React.FC<IPromptSettings> = ({ prompt }) => {
+export const PromptSettings: React.FC<IPromptSettings> = ({
+  prompt,
+  handleChange,
+}) => {
   const [promptProps, setPromptProps] = useState<IPromptProp[]>([]);
 
   const promptType: string = prompt?.system?.type || "basic";
@@ -84,6 +99,7 @@ export const PromptSettings: React.FC<IPromptSettings> = ({ prompt }) => {
             title: "Baic",
             component: (
               <BasicPrompt
+                handleChange={handleChange}
                 promptProps={promptProps}
                 promptFields={promptFields}
               />

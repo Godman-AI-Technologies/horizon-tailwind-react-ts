@@ -56,7 +56,7 @@ export interface IAgentRequest {
   name: string;
   isPrivate?: boolean;
   profileId?: string;
-  languageModelVersion?: ILanguageModelVersion;
+  languageModelVersion: string;
   contributors?: string[];
   description?: string;
   knowledgeBase?: string[];
@@ -65,7 +65,10 @@ export interface IAgentRequest {
   prompt?: {
     system: {
       type: string;
-      promptFields: IPromptField[];
+      promptFields: {
+        promptProp: string;
+        data: string;
+      }[];
     };
     maxTokens: number;
     temperature: number;

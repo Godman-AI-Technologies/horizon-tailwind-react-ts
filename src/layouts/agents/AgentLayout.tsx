@@ -8,12 +8,12 @@ import { fetchData } from "app/utils/fetch/request";
 import { generateUniqueText } from "app/utils/random/agent";
 import FullScreenLoader from "entities/FullScreenLoader/FullScreenLoader";
 import Cookies from "js-cookie";
+import { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ResponsiveLayout } from "shared/ResponsiveLayout";
 import { LayoutWrapper } from "widgets/LayoutWrapper";
 import { PromptSettings } from "./components/PromptSettings";
-import { getAdvancedPrompt, getBasicPromptUIFields } from "./utils/prompt";
 
 interface IAgentLayoutProps {
   type: "create" | "update";
@@ -24,7 +24,25 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [agent, setAgent] = useState<IAgentResponse>(null);
+  const [agent, setAgent] = useState<IAgentRequest>({
+    name: "",
+    description: "",
+    languageModelVersion: "661ce97572c213f85ecd6fc1",
+    prompt: {
+      system: {
+        type: "basic",
+        promptFields: [
+          {
+            promptProp: "66322bc1d58f34fe05c63b65",
+            data: "assistant of chocolate factory",
+          },
+        ],
+      },
+      maxTokens: 1,
+      temperature: 2,
+    },
+  });
+  const [isChanged, setIsChanged] = useState(false);
 
   const uniqueText = generateUniqueText();
 
@@ -36,6 +54,47 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
 
   const [prompt, setPrompt] = useState<IPrompt>();
 
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const [mainKey, subKey] = name.split(".");
+
+    console.log(mainKey, subKey);
+    setAgent((prevAgentData) => {
+      let newAgentData;
+      if (mainKey === "prompt") {
+        newAgentData = {
+          ...prevAgentData,
+          prompt: {
+            ...prevAgentData?.prompt,
+            system: {
+              ...prevAgentData?.prompt?.system,
+              promptFields: [
+                ...(prevAgentData.prompt?.system?.promptFields || []),
+              ],
+            },
+          },
+        };
+        const updatedElement = newAgentData.prompt.system.promptFields.find(
+          (el) => el.promptProp === subKey
+        );
+        if (updatedElement) {
+          updatedElement.data = value;
+        } else {
+          newAgentData.prompt.system.promptFields.push({
+            promptProp: subKey,
+            data: value,
+          });
+        }
+      } else {
+        newAgentData = {
+          ...prevAgentData,
+          [name]: value,
+        };
+      }
+      return newAgentData;
+    });
+  };
+
   useEffect(() => {
     if (type === "create") return;
     setTimeout(async () => {
@@ -44,7 +103,12 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
         const url = process.env.REACT_APP_USER_API + `/agents/${id}`;
         const agent = await fetchData<IAgentResponse>(url, "GET", token);
         console.log(agent);
-        setAgent(agent);
+
+        setAgent({
+          name: agent.name,
+          description: agent.description,
+          languageModelVersion: "661ce97572c213f85ecd6fc1",
+        });
         setName(agent.name);
         setTemporaryName(agent.name);
         setDescription(agent.description);
@@ -64,7 +128,6 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
         name,
         description,
       });
-      setAgent(agent);
       setName(agent.name);
       setTemporaryName(agent.name);
       setDescription(agent.description);
@@ -151,7 +214,9 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
           <ResponsiveLayout
             leftSide={{
               title: "Left",
-              component: <PromptSettings prompt={prompt} />,
+              component: (
+                <PromptSettings prompt={prompt} handleChange={handleChange} />
+              ),
             }}
             centerSide={{ title: "center", component: <div>center</div> }}
             rightSide={{
