@@ -1,7 +1,7 @@
 import InputField from "components/fields/InputField";
 import { FcGoogle } from "react-icons/fc";
 import Checkbox from "components/checkbox";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
@@ -11,17 +11,30 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
+  const [error, setError] = useState(""); // State for error message
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true); // State for button disabled
 
   const navigate = useNavigate();
 
-  const handleSignUp = async (e: any) => {
+  // Effect to check if all fields are filled
+  useEffect(() => {
+    if (username && email && password && confirmPassword && acceptTerms) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [username, email, password, confirmPassword, acceptTerms]);
+
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(""); // Clear any previous errors
+
     if (password !== confirmPassword) {
-      console.error("Passwords do not match");
+      setError("Passwords do not match");
       return;
     }
     if (!acceptTerms) {
-      console.error("You must accept the Terms and Conditions");
+      setError("You must accept the Terms and Conditions");
       return;
     }
     try {
@@ -56,9 +69,10 @@ export default function SignUp() {
         }
       );
       if (!payloadResponse.ok) {
-        throw new Error("Failed to sign up");
+        throw new Error("Failed to fetch user data");
       }
       const payload = await payloadResponse.json();
+
       Cookies.set("accessToken", register.accessToken, {
         expires: 1,
       });
@@ -66,13 +80,17 @@ export default function SignUp() {
         expires: 1,
       });
       navigate("/");
-    } catch (error) {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("An unknown error occurred");
+      }
       console.error("Error signing up:", error);
     }
   };
 
   const handleGoogleSignUp = () => {
-    // Add your Google sign-up logic here
     console.log("Sign Up with Google");
   };
 
@@ -86,22 +104,9 @@ export default function SignUp() {
         <p className="mb-6 ml-1 text-base text-gray-600">
           Enter your email and password to sign up!
         </p>
-        {/*<div
-          className="mb-6 flex h-[50px] w-full items-center justify-center gap-2 rounded-xl bg-lightPrimary hover:cursor-pointer dark:bg-navy-800"
-          onClick={handleGoogleSignUp}
-        >
-          <div className="rounded-full text-xl">
-            <FcGoogle />
-          </div>
-          <h5 className="text-sm font-medium text-navy-700 dark:text-white">
-            Sign Up with Google
-          </h5>
-        </div>
-        <div className="mb-6 flex items-center gap-3">
-          <div className="h-px w-full bg-gray-200 dark:bg-navy-700" />
-          <p className="text-base text-gray-600 dark:text-white"> or </p>
-          <div className="h-px w-full bg-gray-200 dark:bg-navy-700" />
-        </div>*/}
+        {error && (
+          <p className="mb-4 text-sm font-medium text-red-500">{error}</p>
+        )}
         <form onSubmit={handleSignUp}>
           {/* Username */}
           <InputField
@@ -160,7 +165,12 @@ export default function SignUp() {
           </div>
           <button
             type="submit"
-            className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200"
+            disabled={isButtonDisabled}
+            className={`linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 ${
+              isButtonDisabled
+                ? "cursor-not-allowed opacity-50"
+                : "hover:bg-brand-600 active:bg-brand-700"
+            } dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200`}
           >
             Sign Up
           </button>
