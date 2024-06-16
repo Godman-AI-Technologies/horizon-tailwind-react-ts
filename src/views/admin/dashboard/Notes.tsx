@@ -73,10 +73,21 @@ export const Notes = () => {
     setIsAddModalOpen(false);
   };
 
-  const handleEditSubmit = () => {
-    // Logic to handle form submission for editing a note
-    console.log("Edit form submitted:", editForm);
-    // Close the modal after submission
+  const handleEditSubmit = async () => {
+    const token = Cookies.get("accessToken");
+
+    try {
+      await fetchData(
+        `${process.env.REACT_APP_USER_API}/knowledge-base/${editForm._id}`,
+        "PUT",
+        token,
+        { name: editForm.name, data: editForm.data, type: "text" }
+      );
+      setNotes(notes);
+    } catch (error) {
+      console.error("Error on getting notes:", error);
+    }
+
     setIsEditModalOpen(false);
   };
 
