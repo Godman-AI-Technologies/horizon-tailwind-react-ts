@@ -5,7 +5,6 @@ import FullScreenLoader from "entities/FullScreenLoader/FullScreenLoader";
 import Cookies from "js-cookie";
 import { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
-import { IoIdCardOutline } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
 import { ResponsiveLayout } from "shared/ResponsiveLayout";
 import { LayoutWrapper } from "widgets/LayoutWrapper";
