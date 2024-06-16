@@ -8,6 +8,7 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   isDanger?: boolean;
+  isSubmitDisabled?: boolean;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -17,6 +18,7 @@ export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   isDanger = false,
+  isSubmitDisabled = false,
 }) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -57,14 +59,24 @@ export const Modal: React.FC<ModalProps> = ({
           {isDanger ? (
             <button
               onClick={submitHandler}
-              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+              disabled={isSubmitDisabled}
+              className={`rounded bg-red-500 px-4 py-2 text-white transition duration-200 ${
+                isSubmitDisabled
+                  ? "cursor-not-allowed opacity-50"
+                  : "hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+              }`}
             >
               Delete
             </button>
           ) : (
             <button
               onClick={submitHandler}
-              className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+              disabled={isSubmitDisabled}
+              className={`rounded bg-blue-500 px-4 py-2 text-white transition duration-200 ${
+                isSubmitDisabled
+                  ? "cursor-not-allowed opacity-50"
+                  : "hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+              }`}
             >
               Submit
             </button>

@@ -159,7 +159,7 @@ export const Notes = () => {
           submitHandler={handleSubmit}
           isOpen={isAddModalOpen}
           onClose={onClose}
-          //isSubmitDisabled={!isFormValid()}
+          isSubmitDisabled={!isFormValid()}
         >
           <div className="bg-white p-4 text-black">
             <div className="mb-4">
@@ -194,7 +194,7 @@ export const Notes = () => {
           submitHandler={handleEditSubmit}
           isOpen={isEditModalOpen}
           onClose={onClose}
-          //isSubmitDisabled={!isEditFormValid()}
+          isSubmitDisabled={!isEditFormValid()}
         >
           <div className="bg-white p-4 text-black">
             <div className="mb-4">
