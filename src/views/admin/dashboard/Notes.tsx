@@ -3,7 +3,6 @@ import { AddButton } from "entities/AddButton";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { Modal } from "shared/Modal";
-import { FaTrash } from "react-icons/fa";
 import { INote } from "app/types/note";
 import { CardBlock } from "features/CardBlock";
 
