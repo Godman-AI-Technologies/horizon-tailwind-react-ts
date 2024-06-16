@@ -70,6 +70,14 @@ export const Notes = () => {
     setEditForm((prevForm) => ({ ...prevForm, [name]: value }));
   };
 
+  const isFormValid = () => {
+    return form.name.trim() !== "" && form.data.trim() !== "";
+  };
+
+  const isEditFormValid = () => {
+    return editForm.name.trim() !== "" && editForm.data.trim() !== "";
+  };
+
   const handleSubmit = async () => {
     const token = Cookies.get("accessToken");
     const profileId = Cookies.get("profileId");
@@ -110,13 +118,11 @@ export const Notes = () => {
   };
 
   const onClose = () => {
-    // Logic to handle closing the modal
     setIsAddModalOpen(false);
     setIsEditModalOpen(false);
   };
 
   const handleAddButtonClick = () => {
-    // Open the modal when the AddButton is clicked
     setIsAddModalOpen(true);
   };
 
@@ -153,8 +159,9 @@ export const Notes = () => {
           submitHandler={handleSubmit}
           isOpen={isAddModalOpen}
           onClose={onClose}
+          //isSubmitDisabled={!isFormValid()}
         >
-          <div className="bg-gray-900 p-4 text-white">
+          <div className="bg-white p-4 text-black">
             <div className="mb-4">
               <label htmlFor="name" className="mb-2 block">
                 Name
@@ -165,7 +172,7 @@ export const Notes = () => {
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                className="w-full rounded border border-gray-700 bg-black p-2"
+                className="w-full rounded border border-gray-300 p-2"
               />
             </div>
             <div>
@@ -177,7 +184,7 @@ export const Notes = () => {
                 name="data"
                 value={form.data}
                 onChange={handleChange}
-                className="h-32 w-full rounded border border-gray-700 bg-black p-2"
+                className="h-32 w-full rounded border border-gray-300 p-2"
               />
             </div>
           </div>
@@ -187,8 +194,9 @@ export const Notes = () => {
           submitHandler={handleEditSubmit}
           isOpen={isEditModalOpen}
           onClose={onClose}
+          //isSubmitDisabled={!isEditFormValid()}
         >
-          <div className="bg-gray-900 p-4 text-white">
+          <div className="bg-white p-4 text-black">
             <div className="mb-4">
               <label htmlFor="edit-name" className="mb-2 block">
                 Name
@@ -199,7 +207,7 @@ export const Notes = () => {
                 name="name"
                 value={editForm.name}
                 onChange={handleEditChange}
-                className="w-full rounded border border-gray-700 bg-black p-2"
+                className="w-full rounded border border-gray-300 p-2"
               />
             </div>
             <div>
@@ -211,7 +219,7 @@ export const Notes = () => {
                 name="data"
                 value={editForm.data}
                 onChange={handleEditChange}
-                className="h-32 w-full rounded border border-gray-700 bg-black p-2"
+                className="h-32 w-full rounded border border-gray-300 p-2"
               />
             </div>
           </div>
