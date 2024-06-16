@@ -251,7 +251,7 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
               component: (
                 <>
                   {type === "update" ? (
-                    <Chat />
+                    <Chat agentId={id} />
                   ) : (
                     <div>no chat in create mode</div>
                   )}

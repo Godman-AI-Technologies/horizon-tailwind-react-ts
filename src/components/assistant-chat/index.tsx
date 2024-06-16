@@ -37,12 +37,14 @@ interface ChatProps {
   className?: string;
   inputPlaceholder?: string;
   buttonText?: string;
+  agentId?: string;
 }
 
 const Chat: React.FC<ChatProps> = ({
   className = "",
   inputPlaceholder = "Type your message...",
   buttonText = "Send",
+  agentId,
 }) => {
   const [messages, setMessages] = useState<ILLMMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
@@ -79,7 +81,9 @@ const Chat: React.FC<ChatProps> = ({
 
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_USER_API}/agents/${process.env.REACT_APP_ASSISTANT_ID}/llm`,
+        `${process.env.REACT_APP_USER_API}/agents/${
+          agentId ? agentId : process.env.REACT_APP_ASSISTANT_ID
+        }/llm`,
         {
           method: "POST",
           headers: {
