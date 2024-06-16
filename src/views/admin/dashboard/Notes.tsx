@@ -35,8 +35,20 @@ export const Notes = () => {
     });
   }, []);
 
-  const handleDelete = (id: string) => {
-    alert(`Delete note with id: ${id}`);
+  const handleDelete = async (id: string) => {
+    const token = Cookies.get("accessToken");
+
+    try {
+      await fetchData(
+        `${process.env.REACT_APP_USER_API}/knowledge-base/${id}`,
+        "DELETE",
+        token
+      );
+      setNotes(notes);
+    } catch (error) {
+      console.error("Error on deleting note:", error);
+    }
+    fetchNotes();
   };
 
   const handleBlockClick = (note: INote) => {
@@ -71,7 +83,7 @@ export const Notes = () => {
       );
       setNotes(notes);
     } catch (error) {
-      console.error("Error on getting notes:", error);
+      console.error("Error on creating note:", error);
     }
 
     setIsAddModalOpen(false);
@@ -90,7 +102,7 @@ export const Notes = () => {
       );
       setNotes(notes);
     } catch (error) {
-      console.error("Error on getting notes:", error);
+      console.error("Error on editing note:", error);
     }
 
     setIsEditModalOpen(false);
