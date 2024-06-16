@@ -25,8 +25,10 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const uniqueText = generateUniqueText();
+
   const [agent, setAgent] = useState<IAgentRequest>({
-    name: "",
+    name: uniqueText,
     description: "",
     languageModelVersion: "661ce97572c213f85ecd6fc1",
     prompt: {
@@ -44,8 +46,6 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
     },
   });
   // const [isChanged, setIsChanged] = useState(false);
-
-  const uniqueText = generateUniqueText();
 
   const [temporaryName, setTemporaryName] = useState(uniqueText);
   const [temporaryDescription, setTemporaryDescription] = useState("");
