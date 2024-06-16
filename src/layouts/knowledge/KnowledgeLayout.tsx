@@ -38,6 +38,7 @@ export const KnowledgeLayout: React.FC<IKnowledgeLayoutProps> = ({ type }) => {
           name: knowledge.name,
           data: knowledge.data,
         });
+        setTemporaryName(knowledge.name);
         setLoading(false);
       } catch (error) {
         console.error("Error on fetching knowledge:", error);
@@ -77,6 +78,10 @@ export const KnowledgeLayout: React.FC<IKnowledgeLayoutProps> = ({ type }) => {
     } catch (error) {
       console.error("Error on creating knowledge:", error);
     }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setKnowledge((prev) => ({ name: prev.name, data: e.target.value }));
   };
 
   return (
@@ -133,7 +138,18 @@ export const KnowledgeLayout: React.FC<IKnowledgeLayoutProps> = ({ type }) => {
                 </div>
               ),
             }}
-            centerSide={{ title: "center", component: <div>center</div> }}
+            centerSide={{
+              title: "center",
+              component: (
+                <textarea
+                  onChange={handleChange}
+                  className="bg-transparent relative box-border h-full w-full cursor-text select-text resize-none whitespace-pre-wrap break-words border-0 p-[5px_12px] align-bottom font-sans text-sm leading-[22px] shadow-none outline-none"
+                  placeholder="Type something..."
+                >
+                  {knowledge?.data || ""}
+                </textarea>
+              ),
+            }}
             rightSide={{
               title: "right",
               component: <div className="h-full bg-green-300">Info</div>,
