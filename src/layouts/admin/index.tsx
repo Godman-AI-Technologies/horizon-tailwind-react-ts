@@ -67,7 +67,7 @@ export default function Admin(props: { [x: string]: any }) {
               secondary={getActiveNavbar(routes)}
               {...rest}
             />
-            <div className="pt-5s mx-auto mb-auto p-2 dark:text-gray-200 md:pr-2">
+            <div className="pt-5s mx-auto mb-auto h-full p-2 dark:text-gray-200 md:pr-2">
               <Routes>
                 {getRoutes(routes)}
 

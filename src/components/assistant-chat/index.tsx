@@ -128,7 +128,7 @@ const Chat: React.FC<ChatProps> = ({
   }, [typing]);
 
   return (
-    <div className={`p-4 ${className}`}>
+    <div className={`h-full w-full p-4 ${className}`}>
       <div className="hide-scrollbar flex h-[60vh] flex-col overflow-auto rounded p-0.5">
         {messages.map((message, index) => (
           <div
