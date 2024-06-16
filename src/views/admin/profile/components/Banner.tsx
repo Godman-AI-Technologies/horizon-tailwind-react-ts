@@ -1,4 +1,4 @@
-import avatar from "assets/img/avatars/avatar11.png";
+import { fetchData } from "app/utils/fetch/request";
 import banner from "assets/img/profile/banner.png";
 import Card from "components/card";
 import Cookies from "js-cookie";
@@ -20,30 +20,27 @@ const Banner = () => {
       const profileId = Cookies.get("profileId");
 
       try {
-        const response = await fetch(
+        const data = await fetchData<{ name: string; picture: string }>(
           `${process.env.REACT_APP_USER_API}/profiles/${profileId}/credentials`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          "GET",
+          token
         );
-
-        if (!response.ok) {
-          throw new Error("Failed to get agents");
-        }
-
-        const data = await response.json();
-        console.log(data);
         setName(data?.name || "unknown");
-        data.picture && setPicture(data.picture);
+        data?.picture && setPicture(data.picture);
+      } catch (err) {
+        console.error(err);
+      }
+      try {
+        const data = await fetchData<{ agents: number }>(
+          `${process.env.REACT_APP_USER_API}/profiles/${profileId}/analytics`,
+          "GET",
+          token
+        );
+        setAgentCount(data.agents);
       } catch (err) {
         console.error(err);
       }
       setEmail("test@email.com");
-      setAgentCount(3);
       setChatCount(43);
       setMessageCount(123);
     });

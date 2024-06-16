@@ -51,7 +51,7 @@ export default function Admin(props: { [x: string]: any }) {
 
   document.documentElement.dir = "ltr";
   return (
-    <div className="flex min-h-screen w-full">
+    <div className="flex w-full">
       <Sidebar open={open} onClose={() => setOpen(false)} />
       {/* Navbar & Main Content */}
       <div className="w-full bg-lightPrimary dark:!bg-navy-900">
@@ -60,14 +60,14 @@ export default function Admin(props: { [x: string]: any }) {
           className={`mx-[12px] h-full flex-none transition-all md:pr-2 xl:ml-[313px]`}
         >
           {/* Routes */}
-          <div className="h-full">
+          <div className="min-h-screen">
             <Navbar
               onOpenSidenav={() => setOpen(true)}
               brandText={currentRoute}
               secondary={getActiveNavbar(routes)}
               {...rest}
             />
-            <div className="pt-5s mx-auto mb-auto min-h-screen p-2 dark:text-gray-200 md:pr-2">
+            <div className="pt-5s mx-auto mb-auto h-full p-2 dark:text-gray-200 md:pr-2">
               <Routes>
                 {getRoutes(routes)}
 

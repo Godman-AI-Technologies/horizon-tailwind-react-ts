@@ -6,6 +6,9 @@ import AuthLayout from "layouts/auth";
 import AuthHandler from "app/utils/auth";
 import SignIn from "views/auth/SignIn";
 import SignUp from "views/auth/SignUp";
+import { AgentLayout } from "layouts/agents";
+import { KnowledgeLayout } from "layouts/knowledge";
+import { TriggerLayout } from "layouts/trigger";
 
 const App = () => {
   return (
@@ -39,6 +42,54 @@ const App = () => {
         element={
           <AuthHandler>
             <RtlLayout />
+          </AuthHandler>
+        }
+      />
+      <Route
+        path="agents/"
+        element={
+          <AuthHandler>
+            <AgentLayout type="create" />
+          </AuthHandler>
+        }
+      />
+      <Route
+        path="agents/:id"
+        element={
+          <AuthHandler>
+            <AgentLayout type="update" />
+          </AuthHandler>
+        }
+      />
+      <Route
+        path="knowledge/"
+        element={
+          <AuthHandler>
+            <KnowledgeLayout type="create" />
+          </AuthHandler>
+        }
+      />
+      <Route
+        path="knowledge/:id"
+        element={
+          <AuthHandler>
+            <KnowledgeLayout type="update" />
+          </AuthHandler>
+        }
+      />
+      <Route
+        path="triggers/"
+        element={
+          <AuthHandler>
+            <TriggerLayout type="create" />
+          </AuthHandler>
+        }
+      />
+      <Route
+        path="triggers/:id"
+        element={
+          <AuthHandler>
+            <TriggerLayout type="update" />
           </AuthHandler>
         }
       />
