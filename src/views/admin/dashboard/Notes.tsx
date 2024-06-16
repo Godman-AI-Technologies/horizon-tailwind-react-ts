@@ -13,21 +13,25 @@ export const Notes = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editForm, setEditForm] = useState<INote>({ name: "", data: "" });
 
+  const fetchNotes = async () => {
+    const token = Cookies.get("accessToken");
+    const profileId = Cookies.get("profileId");
+
+    try {
+      const notes: INote[] = await fetchData(
+        `${process.env.REACT_APP_USER_API}/profiles/${profileId}/knowledge-base`,
+        "GET",
+        token
+      );
+      setNotes(notes);
+    } catch (error) {
+      console.error("Error on getting notes:", error);
+    }
+  };
+
   useEffect(() => {
     setTimeout(async () => {
-      const token = Cookies.get("accessToken");
-      const profileId = Cookies.get("profileId");
-
-      try {
-        const notes: INote[] = await fetchData(
-          `${process.env.REACT_APP_USER_API}/profiles/${profileId}/knowledge-base`,
-          "GET",
-          token
-        );
-        setNotes(notes);
-      } catch (error) {
-        console.error("Error on getting notes:", error);
-      }
+      fetchNotes();
     });
   }, []);
 
@@ -71,6 +75,7 @@ export const Notes = () => {
     }
 
     setIsAddModalOpen(false);
+    fetchNotes();
   };
 
   const handleEditSubmit = async () => {
@@ -89,6 +94,7 @@ export const Notes = () => {
     }
 
     setIsEditModalOpen(false);
+    fetchNotes();
   };
 
   const onClose = () => {
