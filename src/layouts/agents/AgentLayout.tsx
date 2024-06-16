@@ -5,6 +5,7 @@ import FullScreenLoader from "entities/FullScreenLoader/FullScreenLoader";
 import Cookies from "js-cookie";
 import { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
+import { IoIdCardOutline } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
 import { ResponsiveLayout } from "shared/ResponsiveLayout";
 import { LayoutWrapper } from "widgets/LayoutWrapper";
@@ -18,6 +19,8 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
   document.documentElement.dir = "agents";
   const navigate = useNavigate();
   const { id } = useParams();
+
+  const [loading, setLoading] = useState(true);
 
   const uniqueText = generateUniqueText();
 
@@ -126,13 +129,15 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
       }
     };
 
-    fetchPromptProperties();
-
-    if (type !== "create") {
-      setTimeout(() => {
-        fetchAgentData(id);
-      });
-    }
+    setTimeout(async () => {
+      await fetchPromptProperties();
+      if (type !== "create") {
+        await fetchAgentData(id);
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    });
   }, [id, type]);
 
   const updateSubmitHandler = async () => {
@@ -183,7 +188,9 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
 
   return (
     <>
-      {agent || type === "create" ? (
+      {loading ? (
+        <FullScreenLoader />
+      ) : (
         <LayoutWrapper
           name={agent.name}
           isUpdate={type === "update"}
@@ -246,8 +253,6 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
             }}
           />
         </LayoutWrapper>
-      ) : (
-        <FullScreenLoader />
       )}
     </>
   );
