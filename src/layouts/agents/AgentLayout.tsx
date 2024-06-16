@@ -1,14 +1,15 @@
-import { IAgentResponse, IPromptField } from "app/types";
+import { IAgentRequest, IAgentResponse, IPromptProp } from "app/types";
 import { fetchData } from "app/utils/fetch/request";
 import { generateUniqueText } from "app/utils/random/agent";
 import FullScreenLoader from "entities/FullScreenLoader/FullScreenLoader";
 import Cookies from "js-cookie";
+import { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
+import { IoIdCardOutline } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
 import { ResponsiveLayout } from "shared/ResponsiveLayout";
 import { LayoutWrapper } from "widgets/LayoutWrapper";
 import { PromptSettings } from "./components/PromptSettings";
-import { getAdvancedPrompt, getBasicPromptUIFields } from "./utils/prompt";
 
 interface IAgentLayoutProps {
   type: "create" | "update";
@@ -19,42 +20,122 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [agent, setAgent] = useState<IAgentResponse>(null);
+  const [loading, setLoading] = useState(true);
 
   const uniqueText = generateUniqueText();
 
-  const [name, setName] = useState(uniqueText);
-  const [description, setDescription] = useState("");
+  const [agent, setAgent] = useState<IAgentRequest>({
+    name: uniqueText,
+    description: "",
+    languageModelVersion: "661ce97572c213f85ecd6fc1",
+    prompt: {
+      system: {
+        type: "basic",
+        promptFields: [
+          {
+            promptProp: "66322bc1d58f34fe05c63b65",
+            data: "assistant of chocolate factory",
+          },
+        ],
+      },
+      maxTokens: 1,
+      temperature: 2,
+    },
+  });
+  // const [isChanged, setIsChanged] = useState(false);
 
-  const [temporaryName, setTemporaryName] = useState(name);
+  const [temporaryName, setTemporaryName] = useState(uniqueText);
   const [temporaryDescription, setTemporaryDescription] = useState("");
+  const [promptProps, setPromptProps] = useState<IPromptProp[]>([]);
 
-  const [promptType, setPromptType] = useState("basic");
-  const [advancedPrompt, setAdvancedPrompt] = useState<IPromptField>();
-  const [promptFields, setPromptFields] = useState<IPromptField[]>([]);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const [mainKey, subKey] = name.split(".");
+
+    setAgent((prevAgentData) => {
+      let newAgentData;
+      if (mainKey === "prompt") {
+        newAgentData = {
+          ...prevAgentData,
+          prompt: {
+            ...prevAgentData?.prompt,
+            system: {
+              ...prevAgentData?.prompt?.system,
+              promptFields: [
+                ...(prevAgentData.prompt?.system?.promptFields || []),
+              ],
+            },
+          },
+        };
+        const updatedElement = newAgentData.prompt.system.promptFields.find(
+          (el) => el.promptProp === subKey
+        );
+        if (updatedElement) {
+          updatedElement.data = value;
+        } else {
+          newAgentData.prompt.system.promptFields.push({
+            promptProp: subKey,
+            data: value,
+          });
+        }
+      } else {
+        newAgentData = {
+          ...prevAgentData,
+          [name]: value,
+        };
+      }
+      return newAgentData;
+    });
+  };
 
   useEffect(() => {
-    if (type === "create") return;
-    setTimeout(async () => {
+    const fetchPromptProperties = async () => {
+      try {
+        const url = `${process.env.REACT_APP_USER_API}/agents/prompt-properties`;
+        const properties = await fetchData<IPromptProp[]>(url, "GET");
+        setPromptProps(properties);
+      } catch (error) {
+        console.error("Error on fetching props:", error);
+      }
+    };
+
+    const fetchAgentData = async (id: string) => {
       try {
         const token = Cookies.get("accessToken");
-        const url = process.env.REACT_APP_USER_API + `/agents/${id}`;
+        const url = `${process.env.REACT_APP_USER_API}/agents/${id}`;
         const agent = await fetchData<IAgentResponse>(url, "GET", token);
         console.log(agent);
-        setAgent(agent);
-        setName(agent.name);
+
+        setAgent({
+          name: agent.name,
+          description: agent.description,
+          languageModelVersion: "661ce97572c213f85ecd6fc1",
+          prompt: {
+            ...agent?.prompt,
+            system: {
+              ...agent?.prompt?.system,
+              promptFields:
+                agent.prompt?.system?.promptFields.map((field) => ({
+                  promptProp: field.promptProp._id,
+                  data: field?.data,
+                })) || [],
+            },
+          },
+        });
         setTemporaryName(agent.name);
-        setDescription(agent.description);
         setTemporaryDescription(agent.description);
-        setPromptType(agent?.prompt?.system?.type);
-        setPromptFields(
-          getBasicPromptUIFields(agent?.prompt?.system?.promptFields)
-        );
-        setAdvancedPrompt(
-          getAdvancedPrompt(agent?.prompt?.system?.promptFields)
-        );
       } catch (error) {
         console.error("Error on fetching agent:", error);
+      }
+    };
+
+    setTimeout(async () => {
+      await fetchPromptProperties();
+      if (type !== "create") {
+        await fetchAgentData(id);
+        setLoading(false);
+      } else {
+        setLoading(false);
       }
     });
   }, [id, type]);
@@ -63,15 +144,14 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
     try {
       const token = Cookies.get("accessToken");
       const url = process.env.REACT_APP_USER_API + `/agents/${id}`;
-      const agent = await fetchData<IAgentResponse>(url, "PUT", token, {
-        name,
-        description,
-      });
-      setAgent(agent);
-      setName(agent.name);
-      setTemporaryName(agent.name);
-      setDescription(agent.description);
-      setTemporaryDescription(agent.description);
+      const updatedAgent = await fetchData<IAgentResponse>(
+        url,
+        "PUT",
+        token,
+        agent
+      );
+      setTemporaryName(updatedAgent.name);
+      setTemporaryDescription(updatedAgent.description);
     } catch (error) {
       console.error("Error on fetching agent:", error);
     }
@@ -82,9 +162,9 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
       const token = Cookies.get("accessToken");
       const profileId = Cookies.get("profileId");
       const url = process.env.REACT_APP_USER_API + `/agents/${profileId}`;
-      const agent = await fetchData<IAgentResponse>(url, "POST", token, {
-        name,
-        description,
+      const createdAgent = await fetchData<IAgentRequest>(url, "POST", token, {
+        name: agent.name,
+        description: agent.description,
         languageModelVersion: "661ce97572c213f85ecd6fc1",
         prompt: {
           system: {
@@ -100,18 +180,7 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
         },
         contributors: [],
       });
-      console.log("await", agent);
-      navigate(agent._id);
-    } catch (error) {
-      console.error("Error on fetching agent:", error);
-    }
-  };
-
-  const getPromptProperties = async () => {
-    try {
-      const url = process.env.REACT_APP_USER_API + `/agents/prompt-properties`;
-      const properties = await fetchData<IAgentResponse>(url, "GET");
-      console.log("PROPS", properties);
+      navigate(createdAgent._id);
     } catch (error) {
       console.error("Error on fetching agent:", error);
     }
@@ -119,17 +188,22 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
 
   return (
     <>
-      {agent || type === "create" ? (
+      {loading ? (
+        <FullScreenLoader />
+      ) : (
         <LayoutWrapper
-          name={name}
+          name={agent.name}
           isUpdate={type === "update"}
           backwardPath="/admin/dashboard/agents"
           modalSubmitHandler={() => {
-            setName(temporaryName);
-            setDescription(temporaryDescription);
+            setAgent({
+              ...agent,
+              name: temporaryName,
+              description: temporaryDescription,
+            });
           }}
           modalCloseHandler={() => {
-            setTemporaryName(name);
+            setTemporaryName(agent.name);
           }}
           submitHandler={
             type === "update" ? updateSubmitHandler : createSubmitHandler
@@ -166,9 +240,9 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
               title: "Left",
               component: (
                 <PromptSettings
-                  promptType={promptType}
-                  promptFields={promptFields}
-                  advacedPrompt={advancedPrompt}
+                  promptProps={promptProps}
+                  agent={agent}
+                  handleChange={handleChange}
                 />
               ),
             }}
@@ -179,8 +253,6 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
             }}
           />
         </LayoutWrapper>
-      ) : (
-        <FullScreenLoader />
       )}
     </>
   );

@@ -1,28 +1,55 @@
-import { IPromptField } from "app/types";
+import { IAgentRequest, IPromptProp } from "app/types";
+import { ChangeEvent } from "react";
+import { useEffect } from "react";
 import { SwitchLayout } from "shared/SwitchLayout";
 
+type THandleChange = (e: ChangeEvent<HTMLInputElement>) => void;
+
 interface IPromptSettings {
-  promptType: string;
-  promptFields: IPromptField[];
-  advacedPrompt: IPromptField;
+  agent: IAgentRequest;
+  handleChange: THandleChange;
+  promptProps: IPromptProp[];
 }
 
 interface IBasicProps {
-  promptFields: IPromptField[];
+  agent: IAgentRequest;
+  promptFields: { promptProp: string; data: string }[];
+  promptProps: IPromptProp[];
+  handleChange: THandleChange;
 }
 
-const BasicPrompt: React.FC<IBasicProps> = ({ promptFields }) => {
+const BasicPrompt: React.FC<IBasicProps> = ({
+  agent,
+  promptProps,
+  promptFields,
+  handleChange,
+}) => {
+  const basicPromptInputs = promptProps
+    .filter((prop) => prop.type === "basic")
+    .map((prop) => {
+      const matchedField = promptFields.find(
+        (field) => field.promptProp === prop._id
+      );
+      return { promptProp: prop, data: matchedField?.data };
+    });
+
   return (
     <div>
-      {promptFields &&
-        promptFields.map((field, index) => (
-          <div key={index} className="flex flex-col">
+      {basicPromptInputs &&
+        basicPromptInputs.map((field) => (
+          <div key={field.promptProp._id} className="flex flex-col">
             <label className="mb-2 text-lg font-medium text-gray-700">
               {field.promptProp.label}
             </label>
             <input
               type="text"
-              value={field.data}
+              name={`prompt.${field.promptProp._id}`}
+              onChange={handleChange}
+              value={
+                agent?.prompt?.system?.promptFields.find(
+                  (el) => el.promptProp === field.promptProp._id
+                )?.data
+              }
               className="rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -31,41 +58,43 @@ const BasicPrompt: React.FC<IBasicProps> = ({ promptFields }) => {
   );
 };
 
-const AdvancedPrompt = ({ promptField }: { promptField: IPromptField }) => {
+interface IAdvancedProps {
+  advancedField: { promptProp: string; data: string };
+  handleChange: THandleChange;
+}
+const AdvancedPrompt: React.FC<IAdvancedProps> = ({
+  advancedField,
+  handleChange,
+}) => {
   return (
-    <textarea
-      className="
-      bg-transparent
-      relative
-      box-border
-      h-full
-      w-full
-      cursor-text
-      select-text
-      resize-none
-      whitespace-pre-wrap
-      break-words
-      border-0
-      p-[5px_12px]
-      align-bottom
-      font-sans
-      text-sm
-      leading-[22px]
-      shadow-none
-      outline-none
-    "
-      placeholder="Type something..."
-    >
-      {promptField?.data || ""}
-    </textarea>
+    <div key={advancedField?.promptProp} className="flex flex-col">
+      <label className="mb-2 text-lg font-medium text-gray-700">Advanced</label>
+      <input
+        type="text"
+        name={`prompt.${advancedField?.promptProp}`}
+        onChange={handleChange}
+        value={advancedField?.data}
+        className="rounded-lg border border-gray-300 p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
   );
 };
 
 export const PromptSettings: React.FC<IPromptSettings> = ({
-  promptType,
-  promptFields,
-  advacedPrompt,
+  agent,
+  handleChange,
+  promptProps,
 }) => {
+  const advancedId = promptProps.find((prop) => prop.type === "advanced")?._id;
+
+  const promptType: string = agent?.prompt?.system?.type || "basic";
+  const promptFields: { promptProp: string; data: string }[] =
+    agent?.prompt?.system?.promptFields || [];
+
+  useEffect(() => {
+    setTimeout(async () => {});
+  }, []);
+
   return (
     <>
       <header className="h-8 text-center text-xl font-bold">
@@ -75,11 +104,25 @@ export const PromptSettings: React.FC<IPromptSettings> = ({
         sides={[
           {
             title: "Baic",
-            component: <BasicPrompt promptFields={promptFields} />,
+            component: (
+              <BasicPrompt
+                agent={agent}
+                handleChange={handleChange}
+                promptProps={promptProps}
+                promptFields={promptFields}
+              />
+            ),
           },
           {
-            title: "Advenced",
-            component: <AdvancedPrompt promptField={advacedPrompt} />,
+            title: "Advanced",
+            component: (
+              <AdvancedPrompt
+                handleChange={handleChange}
+                advancedField={promptFields.find(
+                  (field) => field.promptProp === advancedId
+                )}
+              />
+            ),
           },
         ]}
       />

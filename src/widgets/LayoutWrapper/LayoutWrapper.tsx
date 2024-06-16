@@ -2,6 +2,7 @@ import { ReactNode, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { Modal } from "shared/Modal";
 
 interface ILayoutProps {
   name: string;
@@ -28,7 +29,6 @@ export const LayoutWrapper: React.FC<ILayoutProps> = ({
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [updateTime, setUpdateTime] = useState(null);
-  console.log("TIME", updateTime);
 
   const handleBackClick = () => {
     navigate(backwardPath);
@@ -92,24 +92,17 @@ export const LayoutWrapper: React.FC<ILayoutProps> = ({
       </div>
       {/* Модальное окно */}
       {modalContent && isModalOpen && (
-        <div className="fixed inset-0 flex h-full w-full items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="rounded bg-white p-4">
-            <h2 className="mb-4 text-xl">Редактирование</h2>
-            {modalContent}
-            <button
-              onClick={() => {
-                modalSubmitHandler();
-                setIsModalOpen(false);
-              }}
-              className="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
-            >
-              Confirm
-            </button>
-            <button onClick={handleCloseModal} className="text-red-500">
-              Закрыть
-            </button>
-          </div>
-        </div>
+        <Modal
+          title="Редактирование"
+          submitHandler={() => {
+            modalSubmitHandler();
+            setIsModalOpen(false);
+          }}
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+        >
+          {modalContent}
+        </Modal>
       )}
     </>
   );

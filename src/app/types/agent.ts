@@ -30,8 +30,8 @@ export interface IPrompt {
     type: string;
     promptFields: IPromptField[];
   };
-  maxTokens: 1000;
-  temperature: 0.5;
+  maxTokens: number;
+  temperature: number;
 }
 
 export interface IAgentResponse {
@@ -46,6 +46,33 @@ export interface IAgentResponse {
   knowledgeVector?: string[];
   plugins?: string[];
   prompt?: IPrompt;
+  triggers?: ITriggerResponse[];
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface IAgentRequest {
+  _id?: string;
+  name: string;
+  isPrivate?: boolean;
+  profileId?: string;
+  languageModelVersion: string;
+  contributors?: string[];
+  description?: string;
+  knowledgeBase?: string[];
+  knowledgeVector?: string[];
+  plugins?: string[];
+  prompt?: {
+    system: {
+      type: string;
+      promptFields: {
+        promptProp: string;
+        data: string;
+      }[];
+    };
+    maxTokens: number;
+    temperature: number;
+  };
   triggers?: ITriggerResponse[];
   createdAt?: Date;
   updatedAt?: Date;
