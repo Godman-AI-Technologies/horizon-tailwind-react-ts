@@ -6,7 +6,6 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ResponsiveLayout } from "shared/ResponsiveLayout";
-import { SwitchLayout } from "shared/SwitchLayout";
 import { LayoutWrapper } from "widgets/LayoutWrapper";
 
 interface ITriggerLayoutProps {
