@@ -1,6 +1,7 @@
 import { IAgentRequest, IAgentResponse, IPromptProp } from "app/types";
 import { fetchData } from "app/utils/fetch/request";
 import { generateUniqueText } from "app/utils/random/agent";
+import Chat from "components/assistant-chat";
 import FullScreenLoader from "entities/FullScreenLoader/FullScreenLoader";
 import Cookies from "js-cookie";
 import { ChangeEvent } from "react";
@@ -245,7 +246,18 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
                 />
               ),
             }}
-            centerSide={{ title: "center", component: <div>center</div> }}
+            centerSide={{
+              title: "center",
+              component: (
+                <>
+                  {type === "update" ? (
+                    <Chat agentId={id} />
+                  ) : (
+                    <div>no chat in create mode</div>
+                  )}
+                </>
+              ),
+            }}
             rightSide={{
               title: "right",
               component: <div className="h-full bg-red-300">right</div>,

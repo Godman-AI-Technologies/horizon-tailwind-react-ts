@@ -1,7 +1,5 @@
 import { ReactNode } from "react";
 
-interface IContentProps {}
-
 const ContentLayout: React.FC<any> = (props: {
   children: ReactNode;
   className: string;
