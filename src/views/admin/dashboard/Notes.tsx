@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Modal } from "shared/Modal";
 import { FaTrash } from "react-icons/fa";
 import { INote } from "app/types/note";
+import { CardBlock } from "features/CardBlock";
 
 export const Notes = () => {
   const [notes, setNotes] = useState<INote[]>([]);
@@ -12,6 +13,7 @@ export const Notes = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editForm, setEditForm] = useState<INote>({ name: "", data: "" });
+  const [deleteModalOpen, setDeleteModalOpen] = useState<string>("");
 
   const fetchNotes = async () => {
     const token = Cookies.get("accessToken");
@@ -35,12 +37,12 @@ export const Notes = () => {
     });
   }, []);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async () => {
     const token = Cookies.get("accessToken");
 
     try {
       await fetchData(
-        `${process.env.REACT_APP_USER_API}/knowledge-base/${id}`,
+        `${process.env.REACT_APP_USER_API}/knowledge-base/${deleteModalOpen}`,
         "DELETE",
         token
       );
@@ -49,6 +51,7 @@ export const Notes = () => {
       console.error("Error on deleting note:", error);
     }
     fetchNotes();
+    setDeleteModalOpen("");
   };
 
   const handleBlockClick = (note: INote) => {
@@ -130,29 +133,31 @@ export const Notes = () => {
     <div className="container mx-auto">
       <AddButton onClick={handleAddButtonClick} />
 
+      <Modal
+        title="Delete"
+        isOpen={!!deleteModalOpen}
+        submitHandler={handleDelete}
+        onClose={() => {
+          setDeleteModalOpen("");
+        }}
+        isDanger
+      >
+        <div>Are you sure?</div>
+      </Modal>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {notes &&
           notes.map((note: INote) => (
-            <div
-              key={note._id}
-              onClick={() => {
+            <CardBlock
+              id={note._id}
+              handleClick={() => {
                 handleBlockClick(note);
               }}
-              className="rounded bg-white p-4 shadow dark:bg-navy-700"
+              handleDelete={() => {
+                setDeleteModalOpen(note._id);
+              }}
             >
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold">{note.name}</h2>
-                <button
-                  className="text-red-500 hover:text-red-700"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDelete(note._id);
-                  }}
-                >
-                  <FaTrash />
-                </button>
-              </div>
-            </div>
+              <h2 className="text-lg font-semibold">{note.name}</h2>
+            </CardBlock>
           ))}
         <Modal
           title="Add Note"
