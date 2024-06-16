@@ -1,10 +1,14 @@
 import { fetchData } from "app/utils/fetch/request";
+import { AddButton } from "entities/AddButton";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { FaTrash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 export const Triggers = () => {
   const [triggers, setTriggers] = useState(null);
+  const navigate = useNavigate();
+
   useEffect(() => {
     setTimeout(async () => {
       const token = Cookies.get("accessToken");
@@ -27,13 +31,25 @@ export const Triggers = () => {
     alert(`Delete trigger with id: ${id}`);
   };
 
+  const handleBlockClick = (id: string) => {
+    navigate(`/triggers/${id}`);
+  };
+
   return (
     <div className="container mx-auto">
+      <AddButton
+        onClick={() => {
+          navigate("/triggers");
+        }}
+      />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {triggers &&
           triggers.map((trigger: any) => (
             <div
               key={trigger._id}
+              onClick={() => {
+                handleBlockClick(trigger._id);
+              }}
               className="rounded bg-white p-4 shadow dark:bg-navy-700"
             >
               <div className="flex items-center justify-between">
