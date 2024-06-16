@@ -1,9 +1,4 @@
-import {
-  IAgentRequest,
-  IAgentResponse,
-  IPrompt,
-  IPromptField,
-} from "app/types";
+import { IAgentRequest, IAgentResponse, IPromptProp } from "app/types";
 import { fetchData } from "app/utils/fetch/request";
 import { generateUniqueText } from "app/utils/random/agent";
 import FullScreenLoader from "entities/FullScreenLoader/FullScreenLoader";
@@ -11,7 +6,6 @@ import Cookies from "js-cookie";
 import { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Modal } from "shared/Modal";
 import { ResponsiveLayout } from "shared/ResponsiveLayout";
 import { LayoutWrapper } from "widgets/LayoutWrapper";
 import { PromptSettings } from "./components/PromptSettings";
@@ -49,6 +43,7 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
 
   const [temporaryName, setTemporaryName] = useState(uniqueText);
   const [temporaryDescription, setTemporaryDescription] = useState("");
+  const [promptProps, setPromptProps] = useState<IPromptProp[]>([]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -91,11 +86,20 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
   };
 
   useEffect(() => {
-    if (type === "create") return;
-    setTimeout(async () => {
+    const fetchPromptProperties = async () => {
+      try {
+        const url = `${process.env.REACT_APP_USER_API}/agents/prompt-properties`;
+        const properties = await fetchData<IPromptProp[]>(url, "GET");
+        setPromptProps(properties);
+      } catch (error) {
+        console.error("Error on fetching props:", error);
+      }
+    };
+
+    const fetchAgentData = async (id: string) => {
       try {
         const token = Cookies.get("accessToken");
-        const url = process.env.REACT_APP_USER_API + `/agents/${id}`;
+        const url = `${process.env.REACT_APP_USER_API}/agents/${id}`;
         const agent = await fetchData<IAgentResponse>(url, "GET", token);
         console.log(agent);
 
@@ -120,7 +124,15 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
       } catch (error) {
         console.error("Error on fetching agent:", error);
       }
-    });
+    };
+
+    fetchPromptProperties();
+
+    if (type !== "create") {
+      setTimeout(() => {
+        fetchAgentData(id);
+      });
+    }
   }, [id, type]);
 
   const updateSubmitHandler = async () => {
@@ -220,7 +232,11 @@ export const AgentLayout: React.FC<IAgentLayoutProps> = ({ type }) => {
             leftSide={{
               title: "Left",
               component: (
-                <PromptSettings agent={agent} handleChange={handleChange} />
+                <PromptSettings
+                  promptProps={promptProps}
+                  agent={agent}
+                  handleChange={handleChange}
+                />
               ),
             }}
             centerSide={{ title: "center", component: <div>center</div> }}

@@ -1,7 +1,6 @@
-import { IAgentRequest, IPrompt, IPromptField, IPromptProp } from "app/types";
-import { fetchData } from "app/utils/fetch/request";
+import { IAgentRequest, IPromptProp } from "app/types";
 import { ChangeEvent } from "react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { SwitchLayout } from "shared/SwitchLayout";
 
 type THandleChange = (e: ChangeEvent<HTMLInputElement>) => void;
@@ -9,6 +8,7 @@ type THandleChange = (e: ChangeEvent<HTMLInputElement>) => void;
 interface IPromptSettings {
   agent: IAgentRequest;
   handleChange: THandleChange;
+  promptProps: IPromptProp[];
 }
 
 interface IBasicProps {
@@ -83,8 +83,8 @@ const AdvancedPrompt: React.FC<IAdvancedProps> = ({
 export const PromptSettings: React.FC<IPromptSettings> = ({
   agent,
   handleChange,
+  promptProps,
 }) => {
-  const [promptProps, setPromptProps] = useState<IPromptProp[]>([]);
   const advancedId = promptProps.find((prop) => prop.type === "advanced")?._id;
 
   const promptType: string = agent?.prompt?.system?.type || "basic";
@@ -92,16 +92,7 @@ export const PromptSettings: React.FC<IPromptSettings> = ({
     agent?.prompt?.system?.promptFields || [];
 
   useEffect(() => {
-    setTimeout(async () => {
-      try {
-        const url =
-          process.env.REACT_APP_USER_API + `/agents/prompt-properties`;
-        const properties = await fetchData<IPromptProp[]>(url, "GET");
-        setPromptProps(properties);
-      } catch (error) {
-        console.error("Error on fetching agent:", error);
-      }
-    });
+    setTimeout(async () => {});
   }, []);
 
   return (
