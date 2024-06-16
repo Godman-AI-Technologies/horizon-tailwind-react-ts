@@ -4,7 +4,6 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { Modal } from "shared/Modal";
 import { FaTrash } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import { INote } from "app/types/note";
 
 export const Notes = () => {
@@ -55,10 +54,22 @@ export const Notes = () => {
     setEditForm((prevForm) => ({ ...prevForm, [name]: value }));
   };
 
-  const handleSubmit = () => {
-    // Logic to handle form submission for adding a new note
-    console.log("Form submitted:", form);
-    // Close the modal after submission
+  const handleSubmit = async () => {
+    const token = Cookies.get("accessToken");
+    const profileId = Cookies.get("profileId");
+
+    try {
+      await fetchData(
+        `${process.env.REACT_APP_USER_API}/knowledge-base/${profileId}`,
+        "POST",
+        token,
+        { name: form.name, data: form.data, type: "text" }
+      );
+      setNotes(notes);
+    } catch (error) {
+      console.error("Error on getting notes:", error);
+    }
+
     setIsAddModalOpen(false);
   };
 
@@ -129,12 +140,12 @@ export const Notes = () => {
               />
             </div>
             <div>
-              <label htmlFor="content" className="mb-2 block">
+              <label htmlFor="data" className="mb-2 block">
                 {`${form.data.length}/250`}
               </label>
               <textarea
-                id="content"
-                name="content"
+                id="data"
+                name="data"
                 value={form.data}
                 onChange={handleChange}
                 className="h-32 w-full rounded border border-gray-700 bg-black p-2"
@@ -163,12 +174,12 @@ export const Notes = () => {
               />
             </div>
             <div>
-              <label htmlFor="edit-content" className="mb-2 block">
+              <label htmlFor="edit-data" className="mb-2 block">
                 {`${editForm.data.length}/250`}
               </label>
               <textarea
-                id="edit-content"
-                name="content"
+                id="edit-data"
+                name="data"
                 value={editForm.data}
                 onChange={handleEditChange}
                 className="h-32 w-full rounded border border-gray-700 bg-black p-2"
