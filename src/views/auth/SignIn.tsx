@@ -1,7 +1,7 @@
 import InputField from "components/fields/InputField";
 import { FcGoogle } from "react-icons/fc";
 import Checkbox from "components/checkbox";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
@@ -10,8 +10,18 @@ export default function SignIn() {
   const [password, setPassword] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [error, setError] = useState(""); // State for error message
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true); // State for button disabled
 
   const navigate = useNavigate();
+
+  // Effect to check if all fields are filled
+  useEffect(() => {
+    if (username && password) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [username, password]);
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -130,7 +140,15 @@ export default function SignIn() {
               Forgot Password?
             </a>
           </div>
-          <button className="linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 hover:bg-brand-600 active:bg-brand-700 dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200">
+          <button
+            type="submit"
+            disabled={isButtonDisabled}
+            className={`linear mt-2 w-full rounded-xl bg-brand-500 py-[12px] text-base font-medium text-white transition duration-200 ${
+              isButtonDisabled
+                ? "cursor-not-allowed opacity-50"
+                : "hover:bg-brand-600 active:bg-brand-700"
+            } dark:bg-brand-400 dark:text-white dark:hover:bg-brand-300 dark:active:bg-brand-200`}
+          >
             Sign In
           </button>
         </form>
