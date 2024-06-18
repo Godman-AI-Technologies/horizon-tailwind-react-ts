@@ -3,7 +3,6 @@ import { FiAlignJustify } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
-import avatar from "assets/img/avatars/avatar4.png";
 import Cookies from "js-cookie";
 import { Dropdown } from "shared/Dropdown";
 
@@ -85,13 +84,7 @@ const Navbar = (props: {
         </div>
         {/* Profile & Dropdown */}
         <Dropdown
-          button={
-            <img
-              className="h-10 w-10 rounded-full"
-              src={avatar}
-              alt="Elon Musk"
-            />
-          }
+          button={<img className="h-10 w-10 rounded-full" alt="Elon Musk" />}
           children={
             <div className="flex h-28 w-56 flex-col justify-start rounded-[20px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
               <div className="ms-4 mt-3">

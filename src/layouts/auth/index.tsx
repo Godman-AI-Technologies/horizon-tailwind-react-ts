@@ -1,4 +1,4 @@
-import authImg from "assets/img/auth/auth.jpg";
+import authImg from "./auth.jpg";
 import { Routes, Route, Navigate } from "react-router-dom";
 import routes from "routes";
 import { ReactNode } from "react";

@@ -1,5 +1,5 @@
 import { fetchData } from "app/utils/fetch/request";
-import banner from "assets/img/profile/banner.png";
+import banner from "../assets/banner.png";
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { Card } from "shared/Card";
