@@ -1,9 +1,9 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import ContentLayout from "shared/ContentLayout/ContentLayout";
-import { Agents } from "./Agents";
-import { Knowledge } from "./Knowledge";
-import { Notes } from "./Notes";
-import { Triggers } from "./Triggers";
+import { Agents } from "./components/Agents";
+import { Knowledge } from "./components/Knowledge";
+import { Notes } from "./components/Notes";
+import { Triggers } from "./components/Triggers";
 
 const Dashboard = () => {
   return (

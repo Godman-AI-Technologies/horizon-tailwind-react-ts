@@ -1,12 +1,9 @@
-// Admin Imports
-import MainDashboard from "views/admin/default";
-
-import Profile from "views/admin/profile";
-// Icon Imports
+import { Dashboard } from "pages/Dashboard";
+import { Documentation } from "pages/Documentation";
+import { Home } from "pages/Home";
+import { Profile } from "pages/Profile";
 import { MdHome, MdPerson, MdDashboard } from "react-icons/md";
 import { PiPlugsConnectedFill } from "react-icons/pi";
-import Dashboard from "views/admin/dashboard";
-import Api from "views/admin/api";
 
 const routes = [
   {
@@ -14,7 +11,7 @@ const routes = [
     layout: "/admin",
     path: "default",
     icon: <MdHome className="h-6 w-6" />,
-    component: <MainDashboard />,
+    component: <Home />,
   },
   {
     name: "Profile",
@@ -35,7 +32,7 @@ const routes = [
     layout: "/admin",
     path: "api",
     icon: <PiPlugsConnectedFill className="h-6 w-6" />,
-    component: <Api />,
+    component: <Documentation />,
   },
 ];
 export default routes;

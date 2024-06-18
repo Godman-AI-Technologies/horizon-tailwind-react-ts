@@ -1,6 +1,6 @@
 import { FaCopy } from "react-icons/fa";
 
-const copyToClipboard = (text) => {
+const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text);
 };
 

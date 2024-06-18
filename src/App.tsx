@@ -1,14 +1,14 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 
 import AuthHandler from "app/utils/auth";
-import SignIn from "views/auth/SignIn";
-import SignUp from "views/auth/SignUp";
 import { AuthLayout } from "layouts/AuthLayout";
 import { AdminLayout } from "layouts/AdminLayout";
 import { TriggerLayout } from "layouts/TriggerLayout";
 import { KnowledgeLayout } from "layouts/KnowledgeLayout";
 import { AgentLayout } from "layouts/AgentLayout";
 import { RtlLayout } from "layouts/RtlLayout";
+import { Login } from "pages/Login";
+import { Register } from "pages/Register";
 
 const App = () => {
   return (
@@ -17,7 +17,7 @@ const App = () => {
         path="auth/sign-in"
         element={
           <AuthLayout>
-            <SignIn />
+            <Login />
           </AuthLayout>
         }
       />
@@ -25,7 +25,7 @@ const App = () => {
         path="auth/sign-up"
         element={
           <AuthLayout>
-            <SignUp />
+            <Register />
           </AuthLayout>
         }
       />
