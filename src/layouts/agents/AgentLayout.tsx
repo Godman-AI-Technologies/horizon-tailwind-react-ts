@@ -1,13 +1,13 @@
 import { IAgentRequest, IAgentResponse, IPromptProp } from "app/types";
 import { fetchData } from "app/utils/fetch/request";
 import { generateUniqueText } from "app/utils/random/agent";
-import Chat from "components/assistant-chat";
 import FullScreenLoader from "entities/FullScreenLoader/FullScreenLoader";
 import Cookies from "js-cookie";
 import { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ResponsiveLayout } from "shared/ResponsiveLayout";
+import { Chat } from "widgets/Chat";
 import { LayoutWrapper } from "widgets/LayoutWrapper";
 import { PromptSettings } from "./components/PromptSettings";
 

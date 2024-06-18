@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import Navbar from "components/navbar";
-import Sidebar from "components/sidebar";
 import routes from "routes";
+import { Navbar } from "widgets/Navbar";
+import { Sidebar } from "widgets/Sidebar";
 
 export default function Admin(props: { [x: string]: any }) {
   const { ...rest } = props;

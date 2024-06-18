@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
 
-const ChangePasswordPopup: React.FC<any> = () => {
+const ChangePassword: React.FC<any> = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -122,4 +122,4 @@ const ChangePasswordPopup: React.FC<any> = () => {
   );
 };
 
-export default ChangePasswordPopup;
+export default ChangePassword;

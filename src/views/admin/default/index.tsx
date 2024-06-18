@@ -1,4 +1,4 @@
-import Chat from "components/assistant-chat";
+import { Chat } from "widgets/Chat";
 import ContentLayout from "shared/ContentLayout/ContentLayout";
 
 const Home = () => {

@@ -1,9 +1,9 @@
 import React from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import Navbar from "components/navbar/RTL";
-import Sidebar from "components/sidebar/RTL";
-import Footer from "components/footer/Footer";
 import routes from "routes";
+import { Footer } from "widgets/Footer";
+import { NavbarRTL } from "widgets/Navbar";
+import { SidebarRTL } from "widgets/Sidebar";
 
 export default function RTL() {
   const location = useLocation();
@@ -58,7 +58,7 @@ export default function RTL() {
   document.documentElement.dir = "rtl";
   return (
     <div className="flex min-h-screen w-full">
-      <Sidebar open={open} onClose={() => setOpen(false)} />
+      <SidebarRTL open={open} onClose={() => setOpen(false)} />
       {/* Navbar & Main Content */}
       <div className="h-full w-full bg-lightPrimary dark:!bg-navy-900">
         {/* Main Content */}
@@ -67,7 +67,7 @@ export default function RTL() {
         >
           {/* Routes */}
           <div className="min-h-screen">
-            <Navbar
+            <NavbarRTL
               onOpenSidenav={() => setOpen(true)}
               brandText={currentRoute}
               secondary={getActiveNavbar(routes)}

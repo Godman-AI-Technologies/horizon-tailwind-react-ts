@@ -1,11 +1,11 @@
 import React from "react";
-import Dropdown from "components/dropdown";
 import { FiAlignJustify } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
 import avatar from "assets/img/avatars/avatar4.png";
 import Cookies from "js-cookie";
+import { Dropdown } from "shared/Dropdown";
 
 const Navbar = (props: {
   onOpenSidenav: () => void;

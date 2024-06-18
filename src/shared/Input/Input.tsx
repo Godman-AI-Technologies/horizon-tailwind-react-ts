@@ -1,7 +1,6 @@
-// Custom components
 import React from "react";
 
-function InputField(props: {
+function Input(props: {
   id: string;
   label: string;
   extra: string;
@@ -54,4 +53,4 @@ function InputField(props: {
   );
 }
 
-export default InputField;
+export default Input;

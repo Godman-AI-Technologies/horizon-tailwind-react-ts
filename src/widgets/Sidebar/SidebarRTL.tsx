@@ -1,11 +1,9 @@
-/* eslint-disable */
-
 import { HiX } from "react-icons/hi";
 import Links from "./components/Links";
 
 import routes from "routes";
 
-const Sidebar = (props: {
+const SidebarRTL = (props: {
   open: boolean;
   onClose: React.MouseEventHandler<HTMLSpanElement>;
 }) => {
@@ -39,4 +37,4 @@ const Sidebar = (props: {
   );
 };
 
-export default Sidebar;
+export default SidebarRTL;

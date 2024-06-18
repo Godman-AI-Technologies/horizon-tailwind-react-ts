@@ -1,8 +1,8 @@
-import InputField from "components/fields/InputField";
-import Checkbox from "components/checkbox";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { Checkbox } from "shared/Checkbox";
+import { Input } from "shared/Input";
 
 export default function SignIn() {
   const [username, setUsername] = useState("");
@@ -101,7 +101,7 @@ export default function SignIn() {
         )}
         <form onSubmit={handleSignIn}>
           {/* Username */}
-          <InputField
+          <Input
             variant="auth"
             extra="mb-3"
             label="Username*"
@@ -112,7 +112,7 @@ export default function SignIn() {
           />
 
           {/* Password */}
-          <InputField
+          <Input
             variant="auth"
             extra="mb-3"
             label="Password*"

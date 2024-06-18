@@ -1,8 +1,5 @@
-/* eslint-disable */
-import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import DashIcon from "components/icons/DashIcon";
-// chakra imports
+import DashIcon from "./DashIcon";
 
 export function SidebarLinks(props: { routes: RoutesType[] }) {
   // Chakra color mode
@@ -39,7 +36,7 @@ export function SidebarLinks(props: { routes: RoutesType[] }) {
                   {route.icon ? route.icon : <DashIcon />}{" "}
                 </span>
                 <p
-                  className={`leading-1 flex ms-4 ${
+                  className={`leading-1 ms-4 flex ${
                     activeRoute(route.path) === true
                       ? "font-bold text-navy-700 dark:text-white"
                       : "font-medium text-gray-600"
@@ -49,7 +46,7 @@ export function SidebarLinks(props: { routes: RoutesType[] }) {
                 </p>
               </li>
               {activeRoute(route.path) ? (
-                <div className="absolute top-px h-9 w-1 rounded-lg bg-brand-500 end-0 dark:bg-brand-400" />
+                <div className="absolute end-0 top-px h-9 w-1 rounded-lg bg-brand-500 dark:bg-brand-400" />
               ) : null}
             </div>
           </Link>

@@ -1,8 +1,8 @@
-import InputField from "components/fields/InputField";
-import Checkbox from "components/checkbox";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import { Checkbox } from "shared/Checkbox";
+import { Input } from "shared/Input";
 
 export default function SignUp() {
   const [username, setUsername] = useState("");
@@ -108,7 +108,7 @@ export default function SignUp() {
         )}
         <form onSubmit={handleSignUp}>
           {/* Username */}
-          <InputField
+          <Input
             variant="auth"
             extra="mb-3"
             label="Username*"
@@ -118,7 +118,7 @@ export default function SignUp() {
             onChange={(e) => setUsername(e.target.value)}
           />
           {/* Email */}
-          <InputField
+          <Input
             variant="auth"
             extra="mb-3"
             label="Email*"
@@ -129,7 +129,7 @@ export default function SignUp() {
           />
 
           {/* Password */}
-          <InputField
+          <Input
             variant="auth"
             extra="mb-3"
             label="Password*"
@@ -140,7 +140,7 @@ export default function SignUp() {
           />
 
           {/* Confirm Password */}
-          <InputField
+          <Input
             variant="auth"
             extra="mb-3"
             label="Confirm Password*"
