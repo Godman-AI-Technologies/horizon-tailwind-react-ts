@@ -1,9 +1,9 @@
 import { HiX } from "react-icons/hi";
-import Links from "./components/Links";
+import Links from "./components/LinksRTL";
 
-import routes from "routes";
+import routes from "../routes";
 
-const Sidebar = (props: {
+const SidebarRTL = (props: {
   open: boolean;
   onClose: React.MouseEventHandler<HTMLSpanElement>;
 }) => {
@@ -15,14 +15,14 @@ const Sidebar = (props: {
       }`}
     >
       <span
-        className="absolute right-4 top-4 block cursor-pointer xl:hidden"
+        className="absolute end-4 top-4 block cursor-pointer xl:hidden"
         onClick={onClose}
       >
         <HiX />
       </span>
 
       <div className={`mx-[56px] mt-[50px] flex items-center`}>
-        <div className="ml-1 mt-1 h-2.5 font-poppins text-[26px] font-bold uppercase text-navy-700 dark:text-white">
+        <div className="ms-1 mt-1 h-2.5 font-poppins text-[26px] font-bold uppercase text-navy-700 dark:text-white">
           Godman <span className="font-medium">AI</span>
         </div>
       </div>
@@ -32,10 +32,9 @@ const Sidebar = (props: {
       <ul className="mb-auto pt-1">
         <Links routes={routes} />
       </ul>
-
       {/* Nav item end */}
     </div>
   );
 };
 
-export default Sidebar;
+export default SidebarRTL;

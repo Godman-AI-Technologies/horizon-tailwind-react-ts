@@ -1,8 +1,8 @@
 import React from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import routes from "routes";
+import routes from "./routes";
 import { Navbar } from "widgets/Navbar";
-import { Sidebar } from "widgets/Sidebar";
+import { Sidebar } from "./Sidebar";
 
 export default function Admin(props: { [x: string]: any }) {
   const { ...rest } = props;
@@ -28,15 +28,12 @@ export default function Admin(props: { [x: string]: any }) {
     }
     return activeNavbar;
   };
+
   const getRoutes = (routes: RoutesType[]): any => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
-        return (
-          <Route path={`/${prop.path}`} element={prop.component} key={key} />
-        );
-      } else {
-        return null;
-      }
+      return (
+        <Route path={`/${prop.path}`} element={prop.component} key={key} />
+      );
     });
   };
 
