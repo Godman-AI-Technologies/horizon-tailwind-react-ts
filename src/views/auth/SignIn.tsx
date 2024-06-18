@@ -82,10 +82,6 @@ export default function SignIn() {
     }
   };
 
-  const handleGoogleSignIn = () => {
-    console.log("Sign In with Google");
-  };
-
   return (
     <div className="mb-16 mt-16 flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:mb-10 lg:items-center lg:justify-start">
       {/* Sign in section */}
